@@ -1,0 +1,132 @@
+/* ═══════════════════════════════════════════════════════
+   CLIENT DASHBOARD — Attractive Professional Theme
+   ═══════════════════════════════════════════════════════ */
+
+* { box-sizing: border-box; }
+
+/* ── Base card ── */
+.client-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 30px;
+  border: 1.5px solid #e8edf5;
+  box-shadow: 0 2px 12px rgba(15,23,42,0.06);
+  margin-bottom: 20px;
+}
+.client-card.full-width { max-width: 100%; }
+
+.client-section-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 22px;
+  letter-spacing: -0.4px;
+  padding-bottom: 16px;
+  border-bottom: 1.5px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+/* ── Form controls ── */
+.client-input,
+.client-dropdown,
+.client-textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9px;
+  font-size: 14px;
+  color: #0f172a;
+  background: #fff;
+  outline: none;
+  font-family: inherit;
+  transition: border-color .15s, box-shadow .15s;
+}
+.client-input:focus,
+.client-dropdown:focus,
+.client-textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+}
+.client-input:disabled,
+.client-textarea:disabled {
+  background: #f8fafc;
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.client-input::placeholder,
+.client-textarea::placeholder { color: #94a3b8; }
+.client-textarea { resize: vertical; min-height: 72px; }
+
+/* ── Primary action button ── */
+.client-action-btn {
+  width: 100%;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, #1e40af, #3b82f6);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: all .18s;
+  letter-spacing: .2px;
+  box-shadow: 0 4px 14px rgba(30,64,175,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.client-action-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1e3a8a, #1e40af);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(30,64,175,0.35);
+}
+.client-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ── Form group ── */
+.admin-form-group { margin-bottom: 18px; }
+
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 7px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* ── Loading ── */
+.loading-state {
+  padding: 56px 24px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+/* ── Status badges ── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 11px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.status-success { background: #d1fae5; color: #065f46; }
+.status-pending { background: #fef9c3; color: #92400e; }
+.status-failed  { background: #fee2e2; color: #dc2626; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .client-card { padding: 18px 16px; }
+}

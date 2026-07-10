@@ -1,0 +1,111 @@
+:root {
+  --primary: #1e40af;
+  --bg: #f8fafc;
+  --text: #0f172a;
+  --border: #e2e8f0;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  background: white;
+  border-right: 1px solid var(--border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: 0.3s ease;
+}
+
+/* COLLAPSED MODE */
+.sidebar.collapsed {
+  width: 80px;
+}
+
+/* TOGGLE */
+.toggleBtn {
+  background: white;
+  border: 1px solid var(--border);
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* BRAND */
+.brandCard {
+  background: linear-gradient(135deg, #1e40af, #2563eb);
+  color: white;
+  padding: 14px;
+  border-radius: 12px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+/* MENU */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* BUTTONS */
+.menuItem {
+  border: none;
+  background: #f8fafc;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* HOVER ANIMATION */
+.menuItem:hover {
+  background: #eff6ff;
+  transform: translateX(6px);
+}
+
+/* ACTIVE ANIMATION (PRO LOOK) */
+.menuItem.active {
+  background: white;
+  border-left: 4px solid var(--primary);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.06);
+  color: var(--primary);
+  font-weight: 600;
+  transform: scale(1.02);
+}
+
+/* LOGOUT */
+.bottom {
+  margin-top: auto;
+}
+
+.logoutBtn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: #fee2e2;
+  color: #dc2626;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logoutBtn:hover {
+  transform: scale(1.03);
+}
+
+/* COLLAPSED HIDE TEXT EFFECT */
+.sidebar.collapsed .menuItem {
+  justify-content: center;
+}
+
+.sidebar.collapsed .logoutBtn {
+  justify-content: center;
+}

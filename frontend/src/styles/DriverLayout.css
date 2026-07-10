@@ -1,0 +1,72 @@
+/* ═══════════════════════════════════════════════════════
+   DRIVER LAYOUT (header)
+   ═══════════════════════════════════════════════════════ */
+
+.drv-layout { min-height: 100vh; background: #f0f4fa; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+.drv-layout-header {
+  background: #fff;
+  border-bottom: 1px solid #e8edf5;
+  height: 64px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+}
+
+/* Left: logo + role */
+.drv-layout-left { display: flex; align-items: center; gap: 14px; }
+.drv-layout-logo { height: 36px; width: auto; display: block; }
+.drv-layout-divider { width: 1px; height: 22px; background: #e2e8f0; }
+.drv-role-badge {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 12px; border-radius: 20px;
+  background: #fff7ed; border: 1px solid #fed7aa;
+}
+.drv-role-dot { width: 7px; height: 7px; border-radius: 50%; background: #f97316; }
+.drv-role-text { font-size: 11px; font-weight: 700; color: #c2410c; letter-spacing: 0.5px; }
+
+/* Centre: nav */
+.drv-layout-nav { display: flex; gap: 4px; align-items: center; }
+.drv-nav-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 7px 16px; border-radius: 8px;
+  font-size: 13px; font-weight: 600; text-decoration: none;
+  color: #64748b; border: 1.5px solid transparent;
+  transition: all 0.15s;
+}
+.drv-nav-link:hover { background: #f0f4fa; color: #1e40af; border-color: #e0e7ff; }
+.drv-nav-link.active { background: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
+
+/* Right: bell + user + logout */
+.drv-layout-right { display: flex; align-items: center; gap: 10px; }
+.drv-user-pill {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 12px 5px 6px; background: #f8fafc;
+  border-radius: 30px; border: 1px solid #e2e8f0;
+}
+.drv-user-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, #ea580c, #f97316);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.drv-user-name { font-size: 13px; font-weight: 600; color: #334155; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.drv-logout-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: 8px; cursor: pointer;
+  font-size: 13px; font-weight: 600;
+  background: #fff; color: #ef4444;
+  border: 1.5px solid #fecaca; transition: all 0.15s;
+}
+.drv-logout-btn:hover { background: #fef2f2; border-color: #fca5a5; }
+
+@media (max-width: 768px) {
+  .drv-layout-header { padding: 0 16px; }
+  .drv-layout-nav { gap: 2px; }
+  .drv-nav-link { padding: 6px 10px; font-size: 12px; }
+}

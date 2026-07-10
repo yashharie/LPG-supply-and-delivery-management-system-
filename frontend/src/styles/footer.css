@@ -1,0 +1,21 @@
+.footer{
+  background:linear-gradient(90deg,#001d5c,#002f8f);
+  color:white;
+  padding:60px 80px;
+  display:flex;
+  justify-content:space-between;
+}
+
+.social-icons{
+  display:flex;
+  gap:15px;
+  font-size:24px;
+}
+
+.footer .gas{
+  color:white;
+}
+
+.footer .hub{
+  color:#1ea7ff;
+}

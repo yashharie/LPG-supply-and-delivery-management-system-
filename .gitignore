@@ -1,0 +1,26 @@
+# Laravel
+backend/vendor/
+backend/.env
+backend/storage/*.key
+backend/public/storage
+backend/bootstrap/cache/*.php
+
+# React
+frontend/node_modules/
+frontend/dist/
+
+# Python
+gashub-ai/venv/
+gashub-ai/__pycache__/
+gashub-ai/*.pyc
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

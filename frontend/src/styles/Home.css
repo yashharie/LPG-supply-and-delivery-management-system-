@@ -1,0 +1,598 @@
+/* ============================================================
+   GasHub Premium System Design Language — Unified Archetype
+   ============================================================ */
+
+:root {
+  --gashub-navy-deep:    #0a1833;
+  --gashub-navy-mid:     #11254a;
+  --gashub-blue-primary: #1e62d4;
+  --gashub-blue-hover:   #154cb3;
+  --gashub-blue-tint:    #eff6ff;
+  --gashub-blue-border:  #dbeafe;
+  --gashub-slate-dark:   #0f172a;
+  --gashub-slate-body:   #334155;
+  --gashub-slate-muted:  #64748b;
+  --gashub-border-light: #e2e8f0;
+  --gashub-surface-pure: #ffffff;
+}
+
+/* Base Normalizations */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--gashub-slate-dark);
+  background-color: #f8fafc;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Master Flow Controller Wrapper */
+.gashub-landing-root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* ============================================================
+   STABLE PURE WHITE NAVBAR (BIG LOGO & SWAPPED BUTTONS)
+   ============================================================ */
+.gashub-navbar {
+  background-color: var(--gashub-surface-pure); /* Crisp white look preserved */
+  height: 105px;                    /* Expanded height container to fit a larger logo gracefully */
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--gashub-border-light);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+}
+
+.navbar-left-brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo-img {
+  height: 75px;                     /* Significantly scaled up logo sizing */
+  width: auto;
+  object-fit: contain;
+  display: block;
+  
+  /* NOTE: If your image text elements are white, this contrast filter makes them visible on white backgrounds. 
+     If your logo image has dark text already, feel free to remove this single filter line below! 
+  */
+  filter: drop-shadow(0px 2px 4px rgba(11, 21, 45, 0.15)); 
+}
+
+.navbar-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Primary Action Button: Register (Now Swapped to First) */
+.action-btn-register {
+  background-color: var(--gashub-blue-primary);
+  color: var(--gashub-surface-pure);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 11px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(30, 98, 212, 0.18);
+  transition: all 0.2s ease;
+}
+
+.action-btn-register:hover {
+  background-color: var(--gashub-blue-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(30, 98, 212, 0.28);
+}
+
+/* Secondary Action Button: Login (Now Swapped to Second) */
+.action-btn-login {
+  color: var(--gashub-navy-mid);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid var(--gashub-border-light);
+}
+
+.action-btn-login:hover {
+  background-color: var(--gashub-blue-tint);
+  color: var(--gashub-blue-primary);
+  border-color: var(--gashub-blue-border);
+}
+
+/* ============================================================
+   HERO CONTAINER SECTION
+   ============================================================ */
+.gashub-hero {
+  display: flex;
+  width: 100%;
+  min-height: calc(85vh - 105px);
+  background: linear-gradient(135deg, #eef6fc 0%, #dce9f5 50%, #ccdcf0 100%);
+  position: relative;
+  align-items: center;
+}
+
+.hero-content-col {
+  flex: 1;
+  max-width: 650px;
+  padding: 60px 4% 60px 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 5;
+}
+
+.hero-pill-badge {
+  display: inline-block;
+  width: fit-content;
+  background-color: rgba(30, 98, 212, 0.08);
+  color: var(--gashub-blue-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(30, 98, 212, 0.12);
+}
+
+.hero-main-title {
+  font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+  font-weight: 800;
+  color: var(--gashub-navy-deep);
+  line-height: 1.15;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+.hero-description-text {
+  font-size: 1.05rem;
+  color: var(--gashub-slate-body);
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+.hero-action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.btn-hero-primary,
+.btn-hero-secondary,
+.btn-hero-portal {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-hero-primary {
+  background-color: var(--gashub-navy-deep);
+  color: var(--gashub-surface-pure);
+}
+.btn-hero-primary:hover {
+  background-color: #030a17;
+  transform: translateY(-2px);
+}
+
+.btn-hero-secondary {
+  background-color: transparent;
+  color: var(--gashub-navy-deep);
+  border: 1.5px solid rgba(17, 37, 74, 0.3);
+}
+.btn-hero-secondary:hover {
+  border-color: var(--gashub-blue-primary);
+  background-color: rgba(30, 98, 212, 0.04);
+}
+
+.btn-hero-portal {
+  background-color: var(--gashub-blue-primary);
+  color: var(--gashub-surface-pure);
+}
+.btn-hero-portal:hover {
+  background-color: var(--gashub-blue-hover);
+  transform: translateY(-2px);
+}
+
+.hero-media-col {
+  flex: 1;
+  align-self: stretch;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-showcase-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  display: block;
+}
+
+/* ============================================================
+   FEATURES SECTION STYLES
+   ============================================================ */
+.gashub-features {
+  background-color: var(--gashub-surface-pure);
+  padding: 80px 5%;
+}
+
+.section-header-block {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--gashub-navy-deep);
+  letter-spacing: -0.5px;
+}
+
+.section-subtitle-text {
+  font-size: 1rem;
+  color: var(--gashub-slate-muted);
+  margin-top: 10px;
+}
+
+.title-underline-accent {
+  width: 40px;
+  height: 3px;
+  background-color: var(--gashub-blue-primary);
+  border-radius: 2px;
+  margin: 12px auto 0;
+}
+
+.features-grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature-grid-card {
+  background-color: var(--gashub-surface-pure);
+  border: 1px solid var(--gashub-border-light);
+  border-radius: 8px;
+  padding: 30px;
+  transition: all 0.2s ease-in-out;
+}
+
+.feature-grid-card:hover {
+  border-color: var(--gashub-blue-primary);
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.03);
+}
+
+.feature-number {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--gashub-blue-primary);
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+
+.feature-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gashub-slate-dark);
+  margin-bottom: 8px;
+}
+
+.feature-card-desc {
+  font-size: 0.92rem;
+  color: var(--gashub-slate-body);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   WORKFLOW STEP TIMELINE
+   ============================================================ */
+.gashub-workflow {
+  background-color: #f8fafc;
+  border-top: 1px solid var(--gashub-border-light);
+  border-bottom: 1px solid var(--gashub-border-light);
+  padding: 80px 5%;
+  text-align: center;
+}
+
+.gashub-workflow .section-title {
+  margin-bottom: 40px;
+}
+
+.workflow-track-timeline {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  gap: 20px 0;
+}
+
+.timeline-node {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.node-step {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: var(--gashub-blue-tint);
+  color: var(--gashub-blue-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  border: 1px solid var(--gashub-blue-border);
+}
+
+.node-name {
+  font-weight: 600;
+  color: var(--gashub-navy-deep);
+  font-size: 0.95rem;
+  margin-right: 15px;
+}
+
+.node-separator {
+  width: 40px;
+  height: 1.5px;
+  background-color: var(--gashub-border-light);
+  margin-right: 15px;
+}
+
+/* ============================================================
+   CALL TO ACTION BLOCK
+   ============================================================ */
+.gashub-cta-banner {
+  background: linear-gradient(135deg, var(--gashub-navy-deep) 0%, var(--gashub-navy-mid) 100%);
+  padding: 80px 5%;
+  text-align: center;
+  color: var(--gashub-surface-pure);
+}
+
+.cta-content-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-title {
+  font-size: clamp(1.8rem, 3vw, 2.2rem);
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.cta-subtitle {
+  font-size: 1rem;
+  color: #94a3b8;
+  margin-bottom: 30px;
+}
+
+.cta-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn-cta-accent {
+  display: inline-block;
+  background-color: var(--gashub-blue-primary);
+  color: var(--gashub-surface-pure);
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.btn-cta-accent:hover {
+  background-color: var(--gashub-blue-hover);
+  transform: translateY(-1px);
+}
+
+.btn-cta-secondary {
+  display: inline-block;
+  background-color: transparent;
+  color: var(--gashub-surface-pure);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.btn-cta-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ============================================================
+   ENTERPRISE FOOTER STYLING
+   ============================================================ */
+.gashub-footer {
+  background-color: #0b1329;
+  color: #94a3b8;
+  padding: 80px 5% 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.footer-main-content {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-brand-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer-logo-img {
+  height: 40px;
+  width: auto;
+  align-self: flex-start;
+  object-fit: contain;
+}
+
+.footer-brand-pitch {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.footer-social-tray {
+  display: flex;
+  gap: 12px;
+}
+
+.footer-social-tray a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.03);
+  color: var(--gashub-surface-pure);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-decoration: none;
+}
+
+.footer-social-tray a:hover {
+  background-color: var(--gashub-blue-primary);
+  transform: translateY(-2px);
+}
+
+.footer-column-heading {
+  color: var(--gashub-surface-pure);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.footer-navigation-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-navigation-list li a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.footer-navigation-list li a:hover {
+  color: var(--gashub-surface-pure);
+  padding-left: 4px;
+}
+
+.footer-contact-block {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-row-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.contact-row-item svg {
+  color: var(--gashub-blue-primary);
+}
+
+.footer-copyright-subbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 30px auto 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.subbar-legal-links {
+  display: flex;
+  gap: 24px;
+}
+
+.subbar-legal-links a {
+  color: #64748b;
+  text-decoration: none;
+}
+
+.subbar-legal-links a:hover {
+  color: var(--gashub-surface-pure);
+}
+
+/* ============================================================
+   RESPONSIVE LAYOUT BREAKPOINTS
+   ============================================================ */
+@media (max-width: 1024px) {
+  .gashub-navbar { padding: 0 40px; }
+  .footer-main-content { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .gashub-hero { flex-direction: column; text-align: center; }
+  .hero-content-col { max-width: 100%; padding: 60px 40px; align-items: center; }
+  .hero-action-group { justify-content: center; }
+  .hero-media-col { min-height: 350px; width: 100%; }
+}
+
+@media (max-width: 768px) {
+  .workflow-track-timeline { flex-direction: column; gap: 20px; }
+  .workflow-track-timeline .timeline-node { width: 100%; max-width: 300px; }
+  .workflow-track-timeline .timeline-node:not(:last-child)::after { display: none; }
+  .footer-main-content { grid-template-columns: 1fr; gap: 32px; }
+  .footer-copyright-subbar { flex-direction: column; gap: 16px; text-align: center; }
+}
