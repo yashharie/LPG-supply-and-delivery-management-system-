@@ -344,12 +344,7 @@ const GasBookingTab = ({ currentUser, token, setCurrentTab }) => {
             const rowTotal = ct ? parseFloat(ct.price) * Number(item.quantity || 0) : 0;
             const rowErr = Number(item.emptyReturns) > Number(item.quantity);
             return (
-              <div key={item.id} style={{
-                display:"grid", gridTemplateColumns:"1fr 90px 90px 110px 32px",
-                gap:10, alignItems:"end", marginBottom:10,
-                padding:"14px 16px", background:"#f8fafc",
-                borderRadius:10, border:`1.5px solid ${rowErr ? "#fecaca" : "#e8edf5"}`,
-              }}>
+              <div key={item.id} className={`booking-item-row${rowErr ? " has-error" : ""}`}>
                 <div>
                   <label style={{ fontSize:11, color:"#64748b", display:"block", marginBottom:5, fontWeight:600 }}>Cylinder Type</label>
                   <select className="client-dropdown" value={String(item.cylinder_type_id)} onChange={(e) => updateItem(item.id, "cylinder_type_id", e.target.value)} required>

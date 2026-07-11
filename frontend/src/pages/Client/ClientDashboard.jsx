@@ -35,6 +35,7 @@ const ClientDashboard = () => {
   const [currentUser, setCurrentUser] = useState(buildFallbackUser);
   const [currentTab,  setCurrentTab]  = useState("booking");
   const [refreshKey,  setRefreshKey]  = useState(0);
+  const [menuOpen,    setMenuOpen]    = useState(false);
 
   const refresh = useCallback(() => {
     setRefreshKey(k => k + 1);
@@ -80,28 +81,73 @@ const ClientDashboard = () => {
           border:1.5px solid #fecaca; transition:all .15s;
         }
         .cl-logout:hover { background:#fef2f2; border-color:#fca5a5; }
+
+        .cl-hamburger {
+          display: none;
+          background: none;
+          border: none;
+          font-size: 24px;
+          color: #334155;
+          cursor: pointer;
+          padding: 8px;
+          align-items: center;
+        }
+        .cl-mobile-menu {
+          display: none;
+        }
+
+        @media (max-width: 768px) {
+          .cl-desktop-nav, .cl-desktop-right {
+            display: none !important;
+          }
+          .cl-hamburger {
+            display: inline-flex;
+          }
+          .cl-mobile-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #fff;
+            border-bottom: 1px solid #e8edf5;
+            padding: 16px 24px;
+            position: absolute;
+            top: 64px;
+            left: 0;
+            right: 0;
+            box-shadow: 0 4px 12px rgba(15,23,42,0.08);
+            z-index: 99;
+          }
+          .cl-mobile-menu .cl-nav-btn {
+            width: 100%;
+            justify-content: flex-start;
+          }
+          .cl-mobile-menu .cl-logout {
+            width: 100%;
+            justify-content: center;
+          }
+        }
       `}</style>
 
       {/* ══ HEADER ══ */}
       <header style={{
         background:"#fff", borderBottom:"1px solid #e8edf5",
-        height:64, padding:"0 32px",
+        height:64, padding:"0 24px",
         display:"flex", alignItems:"center", justifyContent:"space-between",
         position:"sticky", top:0, zIndex:100,
         boxShadow:"0 1px 4px rgba(15,23,42,0.05)",
       }}>
         {/* Left: logo */}
-        <div style={{ display:"flex", alignItems:"center", gap:14 }}>
-          <img src={logo2} alt="GasHub" style={{ height:36, width:"auto" }} />
-          <div style={{ width:1, height:22, background:"#e2e8f0" }} />
-          <div style={{ display:"flex", alignItems:"center", gap:6, padding:"4px 12px", borderRadius:20, background:"#eff6ff", border:"1px solid #bfdbfe" }}>
-            <div style={{ width:7, height:7, borderRadius:"50%", background:"#3b82f6" }} />
-            <span style={{ fontSize:11, fontWeight:700, color:"#1e40af", letterSpacing:.5 }}>CLIENT</span>
+        <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+          <img src={logo2} alt="GasHub" style={{ height:32, width:"auto" }} />
+          <div style={{ width:1, height:20, background:"#e2e8f0" }} />
+          <div style={{ display:"flex", alignItems:"center", gap:5, padding:"3px 10px", borderRadius:20, background:"#eff6ff", border:"1px solid #bfdbfe" }}>
+            <div style={{ width:6, height:6, borderRadius:"50%", background:"#3b82f6" }} />
+            <span style={{ fontSize:10, fontWeight:700, color:"#1e40af", letterSpacing:.5 }}>CLIENT</span>
           </div>
         </div>
 
-        {/* Centre: tabs */}
-        <nav style={{ display:"flex", gap:4 }}>
+        {/* Centre: tabs (desktop only) */}
+        <nav className="cl-desktop-nav" style={{ display:"flex", gap:4 }}>
           {TABS.map(t => (
             <button
               key={t.key}
@@ -113,8 +159,8 @@ const ClientDashboard = () => {
           ))}
         </nav>
 
-        {/* Right: notification + refresh + user + logout */}
-        <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+        {/* Right controls (desktop only) */}
+        <div className="cl-desktop-right" style={{ display:"flex", alignItems:"center", gap:10 }}>
           <NotificationBell token={token} />
           <button onClick={refresh} title="Refresh" style={{
             display:"flex", alignItems:"center", gap:6,
@@ -146,7 +192,54 @@ const ClientDashboard = () => {
           </div>
           <button onClick={handleLogout} className="cl-logout">Logout</button>
         </div>
+
+        {/* Mobile controls (hamburger + bell) */}
+        <div className="cl-mobile-only" style={{ display:"flex", alignItems:"center", gap:12 }}>
+          <NotificationBell token={token} />
+          <button className="cl-hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">
+            {menuOpen ? "✕" : "☰"}
+          </button>
+        </div>
       </header>
+
+      {/* Mobile menu expanded */}
+      {menuOpen && (
+        <div className="cl-mobile-menu">
+          {TABS.map(t => (
+            <button
+              key={t.key}
+              className={`cl-nav-btn${currentTab === t.key ? " active" : ""}`}
+              onClick={() => { setCurrentTab(t.key); setMenuOpen(false); }}
+            >
+              <span>{t.icon}</span> {t.label}
+            </button>
+          ))}
+          <div style={{ height: 1, background: "#e8edf5", margin: "4px 0" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 0" }}>
+            <div style={{
+              width:32, height:32, borderRadius:"50%",
+              background:"linear-gradient(135deg,#1e40af,#3b82f6)",
+              display:"flex", alignItems:"center", justifyContent:"center",
+              fontSize:14, fontWeight:800, color:"#fff",
+            }}>
+              {currentUser.name.charAt(0).toUpperCase()}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#334155" }}>{currentUser.name}</span>
+              <span style={{ fontSize: 11, color: "#64748b" }}>Consumer Client</span>
+            </div>
+          </div>
+          <button onClick={() => { refresh(); setMenuOpen(false); }} style={{
+            display:"flex", alignItems:"center", justifyContent: "center", gap:6,
+            padding:"9px", borderRadius:8,
+            border:"1.5px solid #e2e8f0", background:"#fff",
+            color:"#475569", fontSize:13, fontWeight:600, cursor:"pointer",
+          }}>
+            <FaSync style={{ fontSize:11 }} /> Refresh Data
+          </button>
+          <button onClick={handleLogout} className="cl-logout">Logout Account</button>
+        </div>
+      )}
 
       {/* ══ WELCOME BANNER (only on booking tab) ══ */}
       {currentTab === "booking" && (

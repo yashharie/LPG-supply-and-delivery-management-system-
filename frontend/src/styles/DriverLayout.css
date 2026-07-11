@@ -67,6 +67,54 @@
 
 @media (max-width: 768px) {
   .drv-layout-header { padding: 0 16px; }
-  .drv-layout-nav { gap: 2px; }
-  .drv-nav-link { padding: 6px 10px; font-size: 12px; }
+
+  .drv-desktop-only {
+    display: none !important;
+  }
+
+  .drv-mobile-only {
+    display: flex !important;
+  }
+
+  .drv-hamburger {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #475569;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .drv-layout-divider,
+  .drv-role-badge {
+    display: none !important;
+  }
+
+  .drv-mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #fff;
+    border-bottom: 1px solid #e8edf5;
+    padding: 16px 20px;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    box-shadow: 0 4px 12px rgba(15,23,42,0.08);
+    z-index: 99;
+  }
+
+  .drv-mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .drv-mobile-nav .drv-nav-link {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }

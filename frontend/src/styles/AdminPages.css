@@ -732,3 +732,13 @@
   .ap-feedback-layout.split { grid-template-columns: 1fr; }
   .ap-map-sidebar { width: 260px; }
 }
+
+@media (max-width: 576px) {
+  .ap-kpi-strip-4, .ap-kpi-strip-3, .ap-kpi-strip-5 { grid-template-columns: 1fr; }
+  .ap-hero-inner { flex-direction: column; align-items: stretch; gap: 12px; }
+  .ap-hero-actions { flex-wrap: wrap; width: 100%; gap: 8px; }
+  .ap-hero-btn { width: 100%; justify-content: center; }
+  .ap-map-body { flex-direction: column; height: auto; overflow: visible; }
+  .ap-map-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); max-height: 250px; }
+  .ap-map-main { height: 350px; }
+}

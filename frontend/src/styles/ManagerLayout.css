@@ -64,4 +64,54 @@
 
 @media (max-width: 768px) {
   .mgr-layout-header { padding: 0 16px; }
+
+  .mgr-desktop-only {
+    display: none !important;
+  }
+
+  .mgr-mobile-only {
+    display: flex !important;
+  }
+
+  .mgr-hamburger {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #475569;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+  }
+
+  .mgr-layout-divider,
+  .mgr-role-badge {
+    display: none !important;
+  }
+
+  .mgr-mobile-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #fff;
+    border-bottom: 1px solid #e8edf5;
+    padding: 16px 20px;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    box-shadow: 0 4px 12px rgba(15,23,42,0.08);
+    z-index: 99;
+  }
+
+  .mgr-mobile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mgr-mobile-nav .mgr-nav-link {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }

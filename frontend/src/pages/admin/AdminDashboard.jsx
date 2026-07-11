@@ -78,6 +78,34 @@ const AdminDashboard = () => {
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
         .adm-kpi:hover{transform:translateY(-4px)!important;box-shadow:0 8px 24px rgba(15,23,42,.13)!important;}
+        .adm-kpi-grid {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          gap: 12px;
+        }
+        .adm-ai-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+        }
+        @media (max-width: 1200px) {
+          .adm-kpi-grid {
+            grid-template-columns: repeat(4, 1fr);
+          }
+        }
+        @media (max-width: 768px) {
+          .adm-kpi-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .adm-ai-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+        @media (max-width: 480px) {
+          .adm-kpi-grid {
+            grid-template-columns: 1fr;
+          }
+        }
       `}</style>
 
       {/* ══ HERO HEADER ══ */}
@@ -120,7 +148,7 @@ const AdminDashboard = () => {
 
       {/* ══ KPI STRIP — floats over hero ══ */}
       <div style={{ padding:"0 36px", marginTop:"-44px", position:"relative", zIndex:2 }}>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(7,1fr)", gap:12 }}>
+        <div className="adm-kpi-grid">
           {statCards.map((c, i) => (
             <div
               key={c.label}
@@ -157,7 +185,7 @@ const AdminDashboard = () => {
       <div style={{ padding:"24px 36px", display:"flex", flexDirection:"column", gap:24 }}>
 
         {/* ══ AI PREDICTIONS ══ */}
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:20 }}>
+        <div className="adm-ai-grid">
           {/* Demand Prediction */}
           <div style={{
             background:"linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%)",

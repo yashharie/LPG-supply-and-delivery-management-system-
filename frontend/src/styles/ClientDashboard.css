@@ -126,7 +126,36 @@
 .status-pending { background: #fef9c3; color: #92400e; }
 .status-failed  { background: #fee2e2; color: #dc2626; }
 
+.booking-item-row {
+  display: grid;
+  grid-template-columns: 1fr 90px 90px 110px 32px;
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 10px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1.5px solid #e8edf5;
+}
+.booking-item-row.has-error {
+  border-color: #fecaca;
+}
+
 /* ── Responsive ── */
 @media (max-width: 640px) {
   .client-card { padding: 18px 16px; }
+  
+  .booking-item-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .booking-item-row > div:nth-child(4) {
+    text-align: left !important;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  .booking-item-row > button {
+    width: 100% !important;
+    margin-top: 4px;
+  }
 }

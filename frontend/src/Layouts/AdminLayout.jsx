@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import {
   FaChartBar, FaListAlt, FaWarehouse, FaBoxes, FaHistory,
   FaUsers, FaUser, FaCogs, FaEnvelopeOpen, FaSignOutAlt, FaTruck,
+  FaBars, FaTimes,
 } from "react-icons/fa";
 import NotificationBell from "../components/NotificationBell";
 import logo2 from "../assets/logo2.png";
@@ -11,6 +13,7 @@ const AdminLayout = () => {
   const navigate = useNavigate();
   const token    = localStorage.getItem("token");
   const name     = localStorage.getItem("name") || "Admin";
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -47,8 +50,26 @@ const AdminLayout = () => {
 
   return (
     <div className="adm-layout">
+      {/* Mobile Top Header Bar */}
+      <header className="adm-mobile-header">
+        <button className="adm-menu-toggle" onClick={() => setSidebarOpen(true)} aria-label="Toggle Navigation Menu">
+          <FaBars />
+        </button>
+        <img src={logo2} alt="GasHub" className="adm-mobile-logo-img" />
+        <div style={{ width: 34 }} />
+      </header>
+
+      {/* Sidebar Overlay Backdrop */}
+      {sidebarOpen && (
+        <div className="adm-sidebar-overlay" onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* ── Sidebar ── */}
-      <aside className="adm-sidebar">
+      <aside className={`adm-sidebar ${sidebarOpen ? "mobile-open" : ""}`}>
+        {/* Mobile close button */}
+        <button className="adm-sidebar-close" onClick={() => setSidebarOpen(false)} aria-label="Close Menu">
+          <FaTimes />
+        </button>
 
         {/* Logo */}
         <div className="adm-sidebar-logo">
@@ -68,6 +89,7 @@ const AdminLayout = () => {
                 <NavLink
                   key={item.to}
                   to={item.to}
+                  onClick={() => setSidebarOpen(false)}
                   className={({ isActive }) => `adm-nav-link${isActive ? " active" : ""}`}
                 >
                   <span className="adm-nav-icon">{item.icon}</span>

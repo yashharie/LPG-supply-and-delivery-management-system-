@@ -86,3 +86,100 @@
 
 /* Main */
 .adm-main { flex: 1; background: #f1f5f9; min-height: 100vh; overflow: auto; }
+
+/* Mobile header and navigation drawer styles */
+.adm-mobile-header { display: none; }
+.adm-sidebar-close { display: none; }
+.adm-sidebar-overlay { display: none; }
+
+@media (max-width: 1024px) {
+  .adm-layout { flex-direction: column; }
+
+  .adm-mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    padding: 0 16px;
+    background: #0f172a;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  .adm-menu-toggle {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+  }
+
+  .adm-mobile-logo-img {
+    height: 32px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .adm-sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .adm-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+    z-index: 1001;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+  }
+
+  .adm-sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.25);
+  }
+
+  .adm-sidebar-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1002;
+  }
+  .adm-sidebar-close:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .adm-main {
+    min-height: calc(100vh - 56px);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

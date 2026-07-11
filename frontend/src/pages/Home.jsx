@@ -1,7 +1,6 @@
 import "../styles/Home.css";
 import logo2 from "../assets/logo2.png";
 import logo  from "../assets/logo.png";
-import truck from "../assets/truck.png";
 import { FaUser, FaArrowRight, FaBox, FaTruck, FaShieldAlt, FaWarehouse, FaMoneyBillWave, FaMapMarkedAlt, FaFacebookF, FaLinkedinIn, FaEnvelope, FaPhoneAlt, FaSignInAlt, FaUserPlus } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -21,18 +20,113 @@ const Home = () => (
 
     {/* ── HERO ── */}
     <section className="gashub-hero">
+      {/* Left content */}
       <div className="hero-content-col">
-        <span className="hero-pill-badge">Reliable LPG Distribution</span>
-        <h1 className="hero-main-title">Smart LPG Supply &amp;<br />Distribution Management</h1>
+        <span className="hero-pill-badge">
+          ⚡ Powered by AI Demand Forecasting
+        </span>
+        <h1 className="hero-main-title">
+          Smart LPG Supply &amp;<br />Distribution Management
+        </h1>
         <p className="hero-description-text">
-          GasHub simplifies LPG ordering, warehouse stock control, smart delivery allocation,
-          payment verification, and live tracking.
+          GasHub simplifies LPG ordering, warehouse stock control, smart delivery
+          allocation, payment verification, and live tracking — all in one platform.
         </p>
+
+        {/* CTA buttons */}
         <div className="hero-action-group">
+          <Link to="/client/register" className="btn-hero-primary">
+            Get Started <FaArrowRight style={{ fontSize: 13 }} />
+          </Link>
+          <Link to="/client/login" className="btn-hero-secondary">
+            <FaSignInAlt style={{ fontSize: 13 }} /> Sign In
+          </Link>
+        </div>
+
+        {/* Trust badges */}
+        <div className="hero-trust-strip">
+          <div className="hero-trust-item">
+            <span className="hero-trust-dot green" />
+            Live GPS Tracking
+          </div>
+          <div className="hero-trust-item">
+            <span className="hero-trust-dot blue" />
+            AI Stock Forecasting
+          </div>
+          <div className="hero-trust-item">
+            <span className="hero-trust-dot navy" />
+            Secure Payments
+          </div>
         </div>
       </div>
+
+      {/* Right mockup panel */}
       <div className="hero-media-col">
-        <img src={truck} alt="GasHub Delivery Truck" className="hero-showcase-img" />
+        <div className="hero-mockup-window">
+          {/* Window chrome */}
+          <div className="hero-mockup-chrome">
+            <span className="chrome-dot red" />
+            <span className="chrome-dot yellow" />
+            <span className="chrome-dot green" />
+            <span className="chrome-title">GasHub — Live Operations</span>
+          </div>
+
+          {/* Body */}
+          <div className="hero-mockup-body">
+
+            {/* Status card 1 */}
+            <div className="hero-stat-card blue-left">
+              <div className="hero-stat-card-top">
+                <span>DISTRIBUTION MATRIX</span>
+                <span className="hero-live-chip">● LIVE</span>
+              </div>
+              <div className="hero-stat-card-value">
+                🚚 Truck #04 In-Transit
+              </div>
+            </div>
+
+            {/* Status card 2 */}
+            <div className="hero-stat-card green-left">
+              <div className="hero-stat-card-top">
+                <span>AUTO-ALLOCATION</span>
+              </div>
+              <div className="hero-stat-card-value" style={{ fontSize: 13 }}>
+                ✅ Nearest Warehouse · Optimal Stock Match
+              </div>
+            </div>
+
+            {/* Mini chart */}
+            <div className="hero-chart-area">
+              {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+                <div
+                  key={i}
+                  className={`hero-chart-bar${i % 2 === 0 ? " active" : ""}`}
+                />
+              ))}
+            </div>
+            <div className="hero-chart-label">
+              AI Predicted Weekly Warehouse Stock Requirements
+            </div>
+
+            {/* How to use — quick steps */}
+            <div className="hero-steps-mini">
+              <div className="hero-steps-title">How it works</div>
+              <div className="hero-step-row">
+                <span className="hero-step-num">1</span>
+                <span className="hero-step-text">Register &amp; verify your account</span>
+              </div>
+              <div className="hero-step-row">
+                <span className="hero-step-num">2</span>
+                <span className="hero-step-text">Place an order &amp; upload payment</span>
+              </div>
+              <div className="hero-step-row">
+                <span className="hero-step-num">3</span>
+                <span className="hero-step-text">Track live delivery to your door</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
     </section>
 
