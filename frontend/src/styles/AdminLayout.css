@@ -24,7 +24,14 @@
   border-bottom: 1px solid rgba(255,255,255,0.06);
   background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
 }
-.adm-sidebar-logo-img { height: 38px; width: auto; display: block; margin-bottom: 10px; }
+.adm-sidebar-logo-img {
+  height: 38px;
+  width: auto;
+  display: block;
+  margin-bottom: 10px;
+  /* Make logo visible on dark sidebar background */
+  filter: brightness(0) invert(1);
+}
 .adm-portal-badge {
   display: flex; align-items: center; gap: 6px;
   padding: 5px 10px; border-radius: 20px;

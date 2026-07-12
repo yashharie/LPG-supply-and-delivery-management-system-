@@ -142,7 +142,7 @@ const GasBookingTab = ({ currentUser, token, setCurrentTab }) => {
       total_quantity: String(totalQty),
       total_empty_returns: String(totalReturns),
       total_cost: cylinderCost.toFixed(2),
-      ...(chosenWarehouse ? { warehouse_id: String(chosenWarehouse.id) } : {}),
+      ...(effectiveWarehouse ? { warehouse_id: String(effectiveWarehouse.id) } : {}),
     };
 
     setSubmitting(true);
