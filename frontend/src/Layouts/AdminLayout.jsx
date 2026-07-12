@@ -3,7 +3,7 @@ import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import {
   FaChartBar, FaListAlt, FaWarehouse, FaBoxes, FaHistory,
   FaUsers, FaUser, FaCogs, FaEnvelopeOpen, FaSignOutAlt, FaTruck,
-  FaBars, FaTimes,
+  FaBars, FaTimes, FaMoneyBillWave,
 } from "react-icons/fa";
 import NotificationBell from "../components/NotificationBell";
 import logo2 from "../assets/logo2.png";
@@ -44,6 +44,7 @@ const AdminLayout = () => {
         { to: "/admin/employees", icon: <FaUsers />,        label: "Employees" },
         { to: "/admin/clients",   icon: <FaUser />,         label: "Clients"   },
         { to: "/admin/feedback",  icon: <FaEnvelopeOpen />, label: "Support"   },
+        { to: "/admin/refunds",   icon: <FaMoneyBillWave />, label: "Refunds"  },
       ],
     },
   ];

@@ -25,7 +25,7 @@ const QUICK_ACTIONS = [
 
 /* ── FAQ list shown when user clicks FAQs ── */
 const FAQS = [
-  { q: "What is the minimum order quantity?",    a: "The minimum order is 20 cylinders per order." },
+  { q: "What is the minimum order quantity?",    a: "The minimum order is 20 cylinders per order. The maximum is 100 cylinders per cylinder type." },
   { q: "How is the delivery fee calculated?",    a: "Delivery fee = LKR 100 base + LKR 100 per km from the warehouse to your location." },
   { q: "Can I cancel my order?",                 a: "Yes — orders can be cancelled only while they are still in Pending status." },
   { q: "What if the warehouse is out of stock?", a: "You can place a Pre-Order. Your cylinders will be auto-delivered once the warehouse is restocked." },

@@ -8,7 +8,7 @@ import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 const API = "http://127.0.0.1:8000/api";
 
 const Contact = () => {
-  const [form,    setForm]    = useState({ name: "", email: "", subject: "", message: "" });
+  const [form,    setForm]    = useState({ name: "", email: "", subject: "", type: "feedback", message: "" });
   const [errors,  setErrors]  = useState({});
   const [sent,    setSent]    = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -42,14 +42,14 @@ const Contact = () => {
     setServerErr(""); setSubmitting(true);
     try {
       await axios.post(`${API}/feedback`, {
-        type:    "feedback",
+        type:    form.type,
         subject: form.subject.trim(),
         message: form.message.trim(),
         name:    form.name.trim(),
         email:   form.email.trim(),
       });
       setSent(true);
-      setForm({ name: "", email: "", subject: "", message: "" });
+      setForm({ name: "", email: "", subject: "", type: "feedback", message: "" });
     } catch (err) {
       setServerErr(err.response?.data?.message ?? "Submission failed. Please try again.");
     } finally { setSubmitting(false); }
@@ -103,9 +103,15 @@ const Contact = () => {
           <div style={{ background: "#fff", borderRadius: 12, padding: 32, border: "1px solid #e2e8f0", boxShadow: "0 2px 10px rgba(0,0,0,0.06)" }}>
             {sent ? (
               <div style={{ textAlign: "center", padding: "30px 0" }}>
-                <div style={{ fontSize: 48 }}>✅</div>
-                <h3 style={{ color: "#065f46", marginTop: 12 }}>Message Sent!</h3>
-                <p style={{ color: "#64748b" }}>We'll get back to you within 24 hours.</p>
+                <div style={{ fontSize: 48 }}>{form.type === "complaint" ? "🚨" : form.type === "issue" ? "⚠️" : "✅"}</div>
+                <h3 style={{ color: "#065f46", marginTop: 12 }}>
+                  {form.type === "complaint" ? "Complaint Received!" : form.type === "issue" ? "Issue Reported!" : "Message Sent!"}
+                </h3>
+                <p style={{ color: "#64748b" }}>
+                  {form.type === "complaint"
+                    ? "Your complaint has been forwarded to the admin team. We'll contact you shortly."
+                    : "We'll get back to you within 24 hours."}
+                </p>
                 <button onClick={() => setSent(false)} style={{ marginTop: 16, background: "#1e62d4", color: "#fff", border: "none", padding: "10px 20px", borderRadius: 6, cursor: "pointer", fontWeight: 600 }}>
                   Send Another
                 </button>
@@ -113,6 +119,37 @@ const Contact = () => {
             ) : (
               <form onSubmit={handleSubmit}>
                 {serverErr && <div style={{ background: "#fee2e2", color: "#991b1b", borderRadius: 8, padding: "10px 14px", marginBottom: 16, fontSize: 13, fontWeight: 600 }}>{serverErr}</div>}
+
+                {/* Type selector */}
+                <div style={{ marginBottom: 16 }}>
+                  <label style={{ display: "block", fontWeight: 600, marginBottom: 6, fontSize: 14, color: "#334155" }}>
+                    Type <span style={{ color: "#dc2626" }}>*</span>
+                  </label>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    {[
+                      { value: "feedback",  label: "💬 Feedback",  bg: "#eff6ff",  border: "#bfdbfe",  color: "#1e40af" },
+                      { value: "complaint", label: "🚨 Complaint", bg: "#fef2f2",  border: "#fca5a5",  color: "#dc2626" },
+                      { value: "issue",     label: "⚠️ Issue",     bg: "#fffbeb",  border: "#fcd34d",  color: "#d97706" },
+                    ].map((t) => (
+                      <button
+                        key={t.value}
+                        type="button"
+                        onClick={() => setForm((p) => ({ ...p, type: t.value }))}
+                        style={{
+                          flex: 1, padding: "9px 6px", borderRadius: 7, cursor: "pointer",
+                          fontWeight: 700, fontSize: 12.5,
+                          background: form.type === t.value ? t.bg : "#f8fafc",
+                          border: `1.5px solid ${form.type === t.value ? t.border : "#e2e8f0"}`,
+                          color: form.type === t.value ? t.color : "#64748b",
+                          transition: "all 0.15s",
+                        }}
+                      >
+                        {t.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 {[
                   { name: "name",    label: "Your Name",     type: "text",  placeholder: "John Perera",     note: "Letters only" },
                   { name: "email",   label: "Email Address", type: "email", placeholder: "john@email.com",  note: "Must end with .com" },

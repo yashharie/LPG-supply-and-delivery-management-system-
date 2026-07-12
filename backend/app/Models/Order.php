@@ -17,6 +17,12 @@ class Order extends Model
         'receipt_path',
         'payment_receipt',
         'status',
+        'payment_status',
+        'cancellation_reason',
+        'cancelled_at',
+        'refunded_by',
+        'refunded_at',
+        'refund_notes',
         'items_summary',
         'assigned_driver_id',
         'trip_id',
@@ -43,6 +49,8 @@ class Order extends Model
         'delivery_otp_expires_at' => 'datetime',
         'batch_items'             => 'array',
         'temp_delivery_details'   => 'array',
+        'cancelled_at'            => 'datetime',
+        'refunded_at'             => 'datetime',
     ];
 
     public function user()
@@ -58,6 +66,11 @@ class Order extends Model
     public function driver()
     {
         return $this->belongsTo(User::class, 'assigned_driver_id');
+    }
+
+    public function refundedBy()
+    {
+        return $this->belongsTo(User::class, 'refunded_by');
     }
 
     public function trip()

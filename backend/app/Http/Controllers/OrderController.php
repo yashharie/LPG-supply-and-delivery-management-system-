@@ -121,6 +121,9 @@ class OrderController extends Controller
             if ((int)($item['emptyReturns'] ?? 0) > (int)($item['quantity'] ?? 0)) {
                 return response()->json(['status' => false, 'message' => "Returns for {$item['name']} exceed quantity."], 422);
             }
+            if ((int)($item['quantity'] ?? 0) > 100) {
+                return response()->json(['status' => false, 'message' => "Maximum is 100 cylinders per cylinder type."], 422);
+            }
         }
 
         $userLat     = (float) $user->latitude;
@@ -250,6 +253,9 @@ class OrderController extends Controller
             if ((int)($item['emptyReturns'] ?? 0) > (int)($item['quantity'] ?? 0)) {
                 return response()->json(['status' => false, 'message' => "Empty returns for {$item['name']} cannot exceed quantity ordered."], 422);
             }
+            if ((int)($item['quantity'] ?? 0) > 100) {
+                return response()->json(['status' => false, 'message' => "Maximum is 100 cylinders per cylinder type."], 422);
+            }
         }
 
         $cylinderCost = (float) $request->total_cost;
@@ -345,6 +351,13 @@ class OrderController extends Controller
         $availableQty = (int) $request->available_qty;
         $pendingQty   = $totalQty - $availableQty;
         $totalReturns = (int) ($request->total_empty_returns ?? 0);
+
+        // Per-item max check
+        foreach (($orderItems ?? []) as $item) {
+            if ((int)($item['quantity'] ?? 0) > 100) {
+                return response()->json(['status' => false, 'message' => "Maximum is 100 cylinders per cylinder type."], 422);
+            }
+        }
         $cylinderCost = (float) $request->total_cost;
         $receiptPath  = $request->file('payment_receipt')->store('receipts', 'public');
         $userLat      = (float) $user->latitude;
@@ -506,17 +519,91 @@ class OrderController extends Controller
     /*─────────────────────────────────────────────
      | CLIENT: cancel order
      ─────────────────────────────────────────────*/
-    public function cancel($id)
+    public function cancel(Request $request, $id)
     {
         $order = Order::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
 
-        if ($order->status !== 'Pending') {
-            return response()->json(['status' => false, 'message' => 'Only pending orders can be cancelled.'], 422);
+        if (!in_array($order->status, ['Pending', 'Approved'])) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Only Pending or Approved orders can be cancelled.',
+            ], 422);
         }
 
-        // Pending orders have no reserved stock yet — safe to cancel directly
-        $order->update(['status' => 'Cancelled']);
-        return response()->json(['status' => true, 'message' => 'Order cancelled.', 'order' => $order]);
+        // Block cancellation if already Refund Pending or Refunded
+        if (in_array($order->payment_status, ['Refund Pending', 'Refunded'])) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'This order already has a refund in progress.',
+            ], 422);
+        }
+
+        $reason = $request->input('cancellation_reason', 'Cancelled by client.');
+
+        // If payment was verified (Approved or beyond Pending) → trigger refund flow
+        $paymentVerified = $order->payment_status === 'Verified'
+            || $order->status === 'Approved';
+
+        if ($paymentVerified) {
+            // Return stock if order was Approved
+            if ($order->status === 'Approved') {
+                $this->returnStockOnReject($order, Auth::id());
+            }
+
+            $order->update([
+                'status'              => 'Cancelled',
+                'payment_status'      => 'Refund Pending',
+                'cancellation_reason' => $reason,
+                'cancelled_at'        => now(),
+            ]);
+
+            // Notify client — refund pending
+            $order->user?->notify(new \App\Notifications\RefundStatusChanged(
+                order: [
+                    'id'           => $order->id,
+                    'order_number' => $order->order_number,
+                    'total_amount' => $order->total_amount,
+                ],
+                refundStatus: 'Refund Pending',
+            ));
+
+        } else {
+            // No payment verified — simple cancel, no refund needed
+            $order->update([
+                'status'              => 'Cancelled',
+                'payment_status'      => 'Pending',
+                'cancellation_reason' => $reason,
+                'cancelled_at'        => now(),
+            ]);
+        }
+
+        // Status changed notification
+        $this->notifyStatusChange($order, 'Cancelled');
+
+        return response()->json([
+            'status'          => true,
+            'message'         => $paymentVerified
+                ? 'Order cancelled. A refund will be processed by the admin.'
+                : 'Order cancelled successfully.',
+            'order'           => $order->fresh(),
+            'refund_required' => $paymentVerified,
+        ]);
+    }
+
+    /*─────────────────────────────────────────────
+     | ADMIN/MANAGER: mark payment as Verified
+     ─────────────────────────────────────────────*/
+    public function verifyPayment($id)
+    {
+        $order = Order::findOrFail($id);
+
+        if ($order->payment_status === 'Verified') {
+            return response()->json(['status' => false, 'message' => 'Payment already verified.'], 422);
+        }
+
+        $order->update(['payment_status' => 'Verified']);
+
+        return response()->json(['status' => true, 'message' => 'Payment verified.', 'order' => $order]);
     }
 
     /*─────────────────────────────────────────────
@@ -567,7 +654,10 @@ class OrderController extends Controller
         }
 
         $this->deductStockOnApproval($order, Auth::id());
-        $order->update(['status' => 'Approved']);
+        $order->update([
+            'status'         => 'Approved',
+            'payment_status' => 'Verified',
+        ]);
         \App\Services\StockAlertService::checkAfterDeduction($order->warehouse_id);
         $this->notifyStatusChange($order, 'Approved');
         return response()->json(['status' => true, 'order' => $order]);

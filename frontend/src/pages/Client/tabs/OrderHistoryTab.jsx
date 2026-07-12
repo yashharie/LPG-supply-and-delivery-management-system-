@@ -8,6 +8,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { confirmDialog, toast, errorAlert } from "../../../utils/swal";
+import Swal from "sweetalert2";
 import InvoiceButton from "../../../components/InvoiceButton";
 import "../../../styles/OrderHistoryTab.css";
 
@@ -104,18 +105,45 @@ const OrderHistory = ({ token, refreshKey }) => {
   useEffect(() => { fetchOrders(); }, [fetchOrders, refreshKey]);
 
   const cancelOrder = async (id) => {
-    const ok = await confirmDialog({
-      title:       "Cancel this order?",
-      text:        "This action cannot be undone.",
-      confirmText: "Yes, Cancel Order",
-      icon:        "warning",
-      danger:      true,
+    const { value: reason, isConfirmed } = await Swal.fire({
+      title: "Cancel this order?",
+      html: `
+        <p style="color:#64748b;font-size:14px;margin-bottom:14px">
+          Please tell us why you are cancelling.
+        </p>
+        <textarea id="cancel-reason" class="swal2-textarea"
+          placeholder="e.g. Changed my mind / Ordered wrong quantity…"
+          style="width:90%;font-size:13px;border:1.5px solid #e2e8f0;border-radius:6px;padding:10px;resize:vertical;min-height:80px;"
+        ></textarea>
+      `,
+      showCancelButton: true,
+      confirmButtonText: "Yes, Cancel Order",
+      cancelButtonText: "Go Back",
+      confirmButtonColor: "#dc2626",
+      preConfirm: () => {
+        const val = document.getElementById("cancel-reason")?.value?.trim();
+        if (!val) {
+          Swal.showValidationMessage("Please provide a reason for cancellation.");
+          return false;
+        }
+        return val;
+      },
     });
-    if (!ok) return;
+
+    if (!isConfirmed) return;
+
     setCancellingId(id);
     try {
-      await axios.post(`${API}/orders/${id}/cancel`, {}, { headers: { Authorization: `Bearer ${token}` } });
-      toast("Order cancelled successfully.", "warning");
+      const res = await axios.post(
+        `${API}/orders/${id}/cancel`,
+        { cancellation_reason: reason },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (res.data.refund_required) {
+        toast("Order cancelled. A refund will be processed by the admin team.", "warning");
+      } else {
+        toast("Order cancelled successfully.", "warning");
+      }
       fetchOrders();
     } catch (err) {
       errorAlert("Cancel Failed", err.response?.data?.message ?? "Could not cancel this order.");
@@ -139,6 +167,16 @@ const OrderHistory = ({ token, refreshKey }) => {
         const typeBadge  = ORDER_TYPE_BADGE[o.order_type] ?? null;
         const isTracking = trackingId === o.id;
 
+        // Payment / refund badge
+        const payBadge = () => {
+          switch (o.payment_status) {
+            case "Verified":       return { label: "✅ Payment Verified",  bg: "#d1fae5", color: "#065f46" };
+            case "Refund Pending": return { label: "⏳ Refund Pending",    bg: "#fffbeb", color: "#92400e" };
+            case "Refunded":       return { label: "💰 Refunded",          bg: "#f0fdf4", color: "#15803d" };
+            default:               return null;
+          }
+        };
+
         return (
           <div key={o.id} style={{
             border: "1px solid #e2e8f0", borderRadius: 10, marginBottom: 14,
@@ -157,6 +195,13 @@ const OrderHistory = ({ token, refreshKey }) => {
                   <span style={{ padding: "2px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700,
                     background: typeBadge.bg, color: typeBadge.color, border: `1px solid ${typeBadge.border}` }}>
                     {typeBadge.label}
+                  </span>
+                )}
+                {/* Payment / refund status badge */}
+                {payBadge() && (
+                  <span style={{ padding: "2px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700,
+                    background: payBadge().bg, color: payBadge().color }}>
+                    {payBadge().label}
                   </span>
                 )}
               </div>
@@ -218,6 +263,39 @@ const OrderHistory = ({ token, refreshKey }) => {
               </div>
             )}
 
+            {/* ── Cancellation + Refund info ── */}
+            {o.status === "Cancelled" && (
+              <div style={{
+                marginTop: 10, padding: "12px 16px", borderRadius: 8,
+                background: "#fef2f2", border: "1px solid #fecaca", fontSize: 13,
+              }}>
+                <div style={{ fontWeight: 700, color: "#991b1b", marginBottom: 4 }}>🚫 Order Cancelled</div>
+                {o.cancellation_reason && (
+                  <div style={{ color: "#7f1d1d", fontSize: 12, marginBottom: 6 }}>
+                    Reason: {o.cancellation_reason}
+                  </div>
+                )}
+                {o.payment_status === "Refund Pending" && (
+                  <div style={{
+                    background: "#fffbeb", border: "1px solid #fde68a",
+                    borderRadius: 6, padding: "8px 12px", color: "#92400e", fontSize: 12, fontWeight: 600,
+                  }}>
+                    ⏳ Your refund of <strong>{fmt(o.total_amount)}</strong> is being processed by the admin team.
+                  </div>
+                )}
+                {o.payment_status === "Refunded" && (
+                  <div style={{
+                    background: "#f0fdf4", border: "1px solid #bbf7d0",
+                    borderRadius: 6, padding: "8px 12px", color: "#065f46", fontSize: 12, fontWeight: 600,
+                  }}>
+                    💰 Refund of <strong>{fmt(o.total_amount)}</strong> completed
+                    {o.refunded_at && ` on ${new Date(o.refunded_at).toLocaleDateString("en-LK", { day: "2-digit", month: "short", year: "numeric" })}`}.
+                    {o.refund_notes && <div style={{ marginTop: 4, fontWeight: 400 }}>Note: {o.refund_notes}</div>}
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* ── Delivery OTP — shown when driver has triggered OTP ── */}
             {o.status === "Out for Delivery" && o.delivery_otp && !o.delivery_otp_verified && (
               <div style={{
@@ -264,8 +342,9 @@ const OrderHistory = ({ token, refreshKey }) => {
               {/* Invoice — available for every order */}
               <InvoiceButton orderId={o.id} token={token} mode="invoice" label="Order Invoice" />
 
-              {/* Cancel — only Pending */}
-              {o.status === "Pending" && (
+              {/* Cancel — Pending or Approved (not already in refund flow) */}
+              {["Pending", "Approved"].includes(o.status) &&
+               !["Refund Pending", "Refunded"].includes(o.payment_status) && (
                 <button onClick={() => cancelOrder(o.id)} disabled={cancellingId === o.id}
                   style={{ background: "#fee2e2", color: "#dc2626", border: "1px solid #fca5a5",
                     padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontWeight: 600, fontSize: 13 }}>

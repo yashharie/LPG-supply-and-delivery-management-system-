@@ -76,6 +76,10 @@ const GasBookingTab = ({ currentUser, token, setCurrentTab }) => {
         errs.push(`Row ${idx + 1}: Returns cannot exceed quantity.`);
     });
     if (totalQty > 0 && totalQty < 20) errs.push("Minimum total order is 20 cylinders.");
+    orderItems.forEach((item, idx) => {
+      if (Number(item.quantity || 0) > 100)
+        errs.push(`Row ${idx + 1}: Maximum is 100 cylinders per cylinder type.`);
+    });
     setValidationErrors(errs);
   }, [orderItems, totalQty]);
 
@@ -337,7 +341,7 @@ const GasBookingTab = ({ currentUser, token, setCurrentTab }) => {
         <form onSubmit={handleProceed} style={{ marginTop:8 }}>
           <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:12 }}>
             <h3 style={{ fontSize:14, fontWeight:700, color:"#334155", margin:0, textTransform:"uppercase", letterSpacing:0.6 }}>Order Items</h3>
-            <span style={{ fontSize:11, color:"#94a3b8" }}>Min. 20 cylinders per order</span>
+            <span style={{ fontSize:11, color:"#94a3b8" }}>Min. 20 · Max. 100 per type</span>
           </div>
 
           {orderItems.map((item) => {
@@ -362,7 +366,7 @@ const GasBookingTab = ({ currentUser, token, setCurrentTab }) => {
                 </div>
                 <div>
                   <label style={{ fontSize:11, color:"#64748b", display:"block", marginBottom:5, fontWeight:600 }}>Qty</label>
-                  <input type="number" min={1} className="client-input" value={item.quantity} onChange={(e) => updateItem(item.id, "quantity", e.target.value)} required />
+                  <input type="number" min={1} max={100} className="client-input" value={item.quantity} onChange={(e) => updateItem(item.id, "quantity", e.target.value)} required />
                 </div>
                 <div>
                   <label style={{ fontSize:11, color: rowErr ? "#dc2626" : "#64748b", display:"block", marginBottom:5, fontWeight:600 }}>

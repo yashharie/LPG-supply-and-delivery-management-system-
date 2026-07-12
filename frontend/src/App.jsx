@@ -27,6 +27,7 @@ import StockHistory   from "./pages/admin/StockHistory";
 import CylinderTypes  from "./pages/admin/CylinderTypes";
 import FeedbackInbox  from "./pages/admin/FeedbackInbox";
 import LiveDriversMap from "./pages/admin/LiveDriversMap";
+import Refunds        from "./pages/admin/Refunds";
 
 /* ── MANAGER ────────────────────────────────────────────────────── */
 import ManagerLayout         from "./Layouts/ManagerLayout";
@@ -99,6 +100,7 @@ function App() {
         <Route path="cylinder-types" element={<CylinderTypes />} />
         <Route path="feedback"      element={<FeedbackInbox />} />
         <Route path="drivers-map"   element={<LiveDriversMap />} />
+        <Route path="refunds"       element={<Refunds />} />
       </Route>
 
       {/* ── MANAGER ───────────────────────────────────────────── */}

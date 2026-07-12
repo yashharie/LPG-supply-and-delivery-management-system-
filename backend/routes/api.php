@@ -315,7 +315,7 @@ GASHUB BUSINESS LOGIC:
 2. SPLIT ORDERS: If no single warehouse has enough stock, the order is split — e.g., 6 from Warehouse A + 4 from Warehouse B to fulfil 10 cylinders.
 3. DRIVER CAPACITY: Each driver has a max capacity (default 15 cylinders). Multiple orders can be assigned to the same driver until capacity is reached. A new driver is assigned once the current one is full.
 4. ORDER STATUSES: Pending → Approved → Out for Delivery → Delivered (or Rejected/Cancelled)
-5. MINIMUM ORDER: 20 cylinders minimum per order.
+5. MINIMUM ORDER: 20 cylinders minimum per order. MAXIMUM: 100 cylinders per cylinder type per order.
 6. DELIVERY FEE: LKR 100 base + LKR 100 per km from warehouse to client.
 
 You help clients with:
@@ -532,6 +532,10 @@ PROMPT;
         Route::get('/admin/feedback',            [FeedbackController::class,'index']);
         Route::put('/admin/feedback/{id}',       [FeedbackController::class,'update']);
         Route::delete('/admin/feedback/{id}',    [FeedbackController::class,'destroy']);
+
+        /* Refund management */
+        Route::get('/admin/refunds',                      [\App\Http\Controllers\RefundController::class, 'index']);
+        Route::post('/admin/refunds/{id}/mark-refunded',  [\App\Http\Controllers\RefundController::class, 'markRefunded']);
     });
 
     /* ── MANAGER ── */

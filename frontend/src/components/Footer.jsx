@@ -27,15 +27,6 @@ const Footer = () => (
       </div>
 
       <div className="footer-nav-column">
-        <h4 className="footer-column-heading">Support</h4>
-        <ul className="footer-navigation-list">
-          <li><Link to="/support">Submit Feedback</Link></li>
-          <li><Link to="/support">File Complaint</Link></li>
-          <li><Link to="/support">Report Issue</Link></li>
-        </ul>
-      </div>
-
-      <div className="footer-nav-column">
         <h4 className="footer-column-heading">Company</h4>
         <ul className="footer-navigation-list">
           <li><Link to="/">Home</Link></li>
