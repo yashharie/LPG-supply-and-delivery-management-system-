@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaBoxes, FaUserCog, FaKey } from "react-icons/fa";
+import "../../styles/EmployeeDashboard.css";
 
 const API = "http://127.0.0.1:8000/api";
 

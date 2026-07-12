@@ -10,6 +10,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { confirmDialog, toast, errorAlert } from "../../utils/swal";
 import InvoiceButton from "../../components/InvoiceButton";
+import "../../styles/ManagerDashboard.css";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -173,12 +174,6 @@ const ManagerDashboard = () => {
 
   return (
     <div style={{ minHeight:"100vh", background:"#f0f4fa", fontFamily:"'Segoe UI',system-ui,sans-serif" }}>
-      <style>{`
-        @keyframes spin{to{transform:rotate(360deg)}}
-        .mgr-input { width:100%; padding:9px 12px; border:1.5px solid #e2e8f0; border-radius:8px; font-size:13px; background:#fff; outline:none; box-sizing:border-box; transition:border-color .15s; }
-        .mgr-input:focus { border-color:#3b82f6; }
-        .mgr-select { width:100%; padding:9px 12px; border:1.5px solid #e2e8f0; border-radius:8px; font-size:13px; background:#fff; outline:none; cursor:pointer; }
-      `}</style>
 
       {/* ══ PAGE HEADER ══ */}
       <div style={{ background:"#fff", borderBottom:"1px solid #e8edf5", padding:"20px 32px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>

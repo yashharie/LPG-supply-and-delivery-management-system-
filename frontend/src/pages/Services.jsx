@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import "../styles/Home.css";
+import "../styles/Services.css";
 import { FaBox, FaWarehouse, FaTruck, FaMoneyBillWave, FaMapMarkedAlt, FaShieldAlt, FaUsersCog, FaChartBar } from "react-icons/fa";
 
 const SERVICES = [

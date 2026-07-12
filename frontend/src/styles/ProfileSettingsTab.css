@@ -1,0 +1,200 @@
+/* ============================================================
+   ProfileSettingsTab.css
+   ============================================================ */
+
+/* View mode */
+.pst-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pst-edit-btn {
+  background: #1e293b;
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.pst-edit-btn:hover { background: #0f172a; }
+
+/* Banners */
+.pst-banner {
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.pst-banner.incomplete { background: #fef9c3; border-color: #fde68a; color: #92400e; }
+.pst-banner.complete   { background: #d1fae5; border-color: #a7f3d0; color: #065f46; }
+.pst-banner.locked     { background: #dbeafe; border-color: #bfdbfe; color: #1e40af; }
+
+/* Profile details table */
+.pst-details-table {
+  background: #f8fafc;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+.pst-detail-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.pst-detail-row:last-child { border-bottom: none; }
+.pst-detail-key {
+  font-weight: 700;
+  color: #64748b;
+  font-size: 13px;
+}
+.pst-detail-val {
+  color: #0f172a;
+  font-size: 14px;
+}
+
+/* View map */
+.pst-view-map-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 8px;
+  margin-top: 20px;
+}
+.pst-view-map-wrap {
+  height: 200px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+/* Edit mode header */
+.pst-edit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.pst-cancel-btn {
+  background: none;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.pst-cancel-btn:hover { background: #f8fafc; }
+
+/* Form textarea */
+.client-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  outline: none;
+  color: #0f172a;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.client-textarea:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+.client-textarea:disabled { opacity: 0.6; background: #f8fafc; }
+
+/* Search row */
+.pst-search-row {
+  display: flex;
+  gap: 8px;
+}
+
+.pst-search-btn {
+  background: #3b82f6;
+  color: #fff;
+  border: none;
+  padding: 0 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.pst-search-btn:hover:not(:disabled) { background: #2563eb; }
+.pst-search-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.pst-gps-btn {
+  background: #10b981;
+  color: #fff;
+  border: none;
+  padding: 0 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.pst-gps-btn:hover:not(:disabled) { background: #059669; }
+.pst-gps-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.pst-search-err {
+  color: #dc2626;
+  font-size: 13px;
+  margin-top: 6px;
+  font-weight: 600;
+}
+
+/* Map wrap */
+.pst-map-wrap {
+  height: 280px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1.5px solid #cbd5e1;
+  margin-top: 6px;
+}
+.pst-map-wrap.locked { opacity: 0.65; pointer-events: none; }
+
+/* Coord bar */
+.pst-coord-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding: 6px 12px;
+  background: #f8fafc;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  font-size: 12px;
+  font-family: monospace;
+  color: #334155;
+}
+
+/* Save feedback */
+.pst-msg {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.pst-msg.ok  { background: #d1fae5; color: #065f46; }
+.pst-msg.err { background: #fee2e2; color: #991b1b; }
+
+/* Geocoding hint */
+.pst-geocoding-hint { margin-left: 8px; font-size: 12px; color: #3b82f6; font-weight: 400; }
+.pst-locked-hint    { margin-left: 8px; font-size: 12px; color: #dc2626; font-weight: 400; }
+.pst-map-hint       { margin-left: 8px; font-size: 12px; color: #64748b; font-weight: 400; }

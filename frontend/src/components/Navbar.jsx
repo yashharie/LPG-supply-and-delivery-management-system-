@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import logo2 from "../assets/logo2.png";
-import "../styles/Home.css";
+import "../styles/NavbarPublic.css";
 
 /**
  * Shared public Navbar — Register + Login only.

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { FaMapMarkerAlt, FaShoppingCart } from "react-icons/fa";
 import axios from "axios";
 import Swal from "sweetalert2";
+import "../../../styles/GasBookingTab.css";
 
 const API = "http://127.0.0.1:8000/api";
 

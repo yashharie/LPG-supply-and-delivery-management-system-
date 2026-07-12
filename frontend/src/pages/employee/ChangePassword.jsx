@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../../styles/ChangePassword.css";
 
 const API = "http://127.0.0.1:8000/api";
 

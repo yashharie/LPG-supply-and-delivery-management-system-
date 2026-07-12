@@ -9,6 +9,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { confirmDialog, toast, errorAlert } from "../../../utils/swal";
 import InvoiceButton from "../../../components/InvoiceButton";
+import "../../../styles/OrderHistoryTab.css";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({

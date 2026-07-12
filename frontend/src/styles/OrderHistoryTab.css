@@ -1,0 +1,328 @@
+/* ============================================================
+   OrderHistoryTab.css
+   ============================================================ */
+
+/* Tab toggle buttons */
+.oht-tab-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.oht-tab-btns { display: flex; gap: 8px; }
+
+.oht-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  border: none;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.oht-tab-btn.active {
+  background: #1e40af;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
+}
+.oht-tab-btn.inactive {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* Order card */
+.oht-order-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  padding: 16px;
+  background: #fff;
+  transition: box-shadow 0.15s;
+}
+.oht-order-card:hover { box-shadow: 0 2px 10px rgba(15, 23, 42, 0.07); }
+
+.oht-order-header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.oht-order-id-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.oht-order-num {
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.oht-status-badge {
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.oht-type-badge {
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.oht-warehouse-label {
+  font-size: 13px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Items line */
+.oht-items-line {
+  font-size: 13px;
+  color: #334155;
+  margin-bottom: 8px;
+}
+.oht-item-chip { margin-right: 12px; }
+
+/* Summary row */
+.oht-summary-row {
+  display: flex;
+  gap: 20px;
+  font-size: 13px;
+  color: #475569;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.oht-summary-amount { font-weight: 700; color: #0f172a; }
+.oht-receipt-link {
+  color: #1e62d4;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+/* Partial/pre-order info box */
+.oht-order-type-box {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.7;
+  border: 1px solid transparent;
+}
+.oht-order-type-box.partial   { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
+.oht-order-type-box.preorder  { background: #f5f3ff; border-color: #ddd6fe; color: #6d28d9; }
+.oht-order-type-box.fulfilled { background: #d1fae5; border-color: #a7f3d0; color: #065f46; }
+
+.oht-type-title { font-weight: 700; margin-bottom: 4px; }
+
+/* OTP box */
+.oht-otp-box {
+  margin-top: 12px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border: 1.5px solid #86efac;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.oht-otp-left { flex: 1; }
+.oht-otp-title {
+  font-weight: 800;
+  color: #15803d;
+  font-size: 14px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.oht-otp-hint { font-size: 12px; color: #166534; line-height: 1.6; }
+
+.oht-otp-code-box {
+  background: #fff;
+  border: 2px solid #16a34a;
+  border-radius: 12px;
+  padding: 12px 24px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.2);
+  min-width: 160px;
+  flex-shrink: 0;
+}
+.oht-otp-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: #16a34a;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.oht-otp-number {
+  font-size: 32px;
+  font-weight: 900;
+  color: #15803d;
+  letter-spacing: 8px;
+  font-family: monospace;
+}
+.oht-otp-expiry { font-size: 10px; color: #94a3b8; margin-top: 4px; }
+
+.oht-otp-verified {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #d1fae5;
+  border: 1px solid #a7f3d0;
+  font-size: 12px;
+  color: #065f46;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Action row */
+.oht-action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.oht-cancel-btn {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.oht-cancel-btn:hover:not(:disabled) { background: #fecaca; }
+.oht-cancel-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.oht-track-btn {
+  border: 1px solid #bfdbfe;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.oht-track-btn.tracking { background: #dbeafe; color: #1e40af; }
+.oht-track-btn.default  { background: #eff6ff; color: #1e40af; }
+
+/* Driver map container */
+.oht-driver-map-label {
+  font-size: 12px;
+  color: #1e40af;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.oht-driver-map-wrap {
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #bfdbfe;
+  margin-top: 10px;
+}
+
+/* Delivery history summary */
+.oht-delivery-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.oht-summary-card {
+  border-radius: 10px;
+  padding: 12px 16px;
+  border-left: 4px solid transparent;
+}
+.oht-summary-card-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.oht-summary-card-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 4px;
+}
+
+/* Delivery row */
+.oht-delivery-row {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 14px 16px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.oht-del-date { font-weight: 700; font-size: 13px; color: #0f172a; }
+.oht-del-time { font-size: 11px; color: #94a3b8; }
+.oht-del-order-ref { font-size: 11px; color: #64748b; margin-top: 3px; font-family: monospace; }
+.oht-del-name  { font-weight: 600; font-size: 14px; color: #0f172a; }
+.oht-del-meta  { font-size: 12px; color: #64748b; }
+.oht-del-right { text-align: right; min-width: 120px; }
+.oht-del-qty-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #d1fae5;
+  color: #065f46;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.oht-del-unit-price { font-size: 11px; color: #64748b; }
+.oht-del-total  { font-weight: 700; font-size: 14px; color: #0f172a; }
+
+/* Empty state */
+.oht-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: #64748b;
+}
+.oht-empty-icon { font-size: 32px; color: #cbd5e1; margin-bottom: 10px; }
+.oht-empty-text { margin: 0; font-size: 14px; }
+.oht-empty-sub  { margin: 6px 0 0; font-size: 12px; color: #94a3b8; }
+
+/* Loading / error states */
+.oht-error-msg { font-size: 12px; color: #dc2626; margin-top: 6px; }
+.oht-wait-msg  { font-size: 12px; color: #64748b; margin-top: 6px; }

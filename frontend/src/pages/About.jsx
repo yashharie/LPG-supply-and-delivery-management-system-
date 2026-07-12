@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import "../styles/Home.css";
+import "../styles/About.css";
 import warehouse from "../assets/warehouse.png";
 
 const About = () => (

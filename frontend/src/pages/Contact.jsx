@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import "../styles/Home.css";
+import "../styles/Contact.css";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 const API = "http://127.0.0.1:8000/api";

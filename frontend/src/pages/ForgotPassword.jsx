@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
+import "../styles/ForgotPassword.css";
 
 const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api";
 

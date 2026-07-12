@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import logo2 from "../assets/logo2.png";
+import "../styles/EmployeePortal.css";
 
 const ROLES = [
   { icon: "", label: "Admin",    desc: "Full system control, warehouses, employees, reports." },

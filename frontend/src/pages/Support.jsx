@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import logo2 from "../assets/logo2.png";
+import "../styles/Support.css";
 
 const API = "http://127.0.0.1:8000/api";
 

@@ -1,0 +1,24 @@
+:root {
+  --gashub-blue-primary: #1e62d4;
+}
+
+.hero-pill-badge {
+  display: inline-block;
+  width: fit-content;
+  background-color: rgba(30, 98, 212, 0.08);
+  color: var(--gashub-blue-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 100px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 576px) {
+  .hero-pill-badge {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+}

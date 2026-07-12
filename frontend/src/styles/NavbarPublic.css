@@ -1,0 +1,89 @@
+:root {
+  --gashub-navy-deep:    #0a1833;
+  --gashub-navy-mid:     #11254a;
+  --gashub-blue-primary: #1e62d4;
+  --gashub-blue-hover:   #154cb3;
+  --gashub-blue-tint:    #eff6ff;
+  --gashub-blue-border:  #dbeafe;
+  --gashub-slate-dark:   #0f172a;
+  --gashub-slate-body:   #334155;
+  --gashub-slate-muted:  #64748b;
+  --gashub-border-light: #e2e8f0;
+  --gashub-surface-pure: #ffffff;
+}
+
+.gashub-navbar {
+  background-color: var(--gashub-surface-pure);
+  height: 105px;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--gashub-border-light);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+}
+
+.navbar-left-brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo-img {
+  height: 75px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0px 2px 4px rgba(11, 21, 45, 0.15)); 
+}
+
+.navbar-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-btn-register {
+  background-color: var(--gashub-blue-primary);
+  color: var(--gashub-surface-pure);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 11px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(30, 98, 212, 0.18);
+  transition: all 0.2s ease;
+}
+
+.action-btn-register:hover {
+  background-color: var(--gashub-blue-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(30, 98, 212, 0.28);
+}
+
+.action-btn-login {
+  color: var(--gashub-navy-mid);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid var(--gashub-border-light);
+}
+
+.action-btn-login:hover {
+  background-color: var(--gashub-blue-tint);
+  color: var(--gashub-blue-primary);
+  border-color: var(--gashub-blue-border);
+}
