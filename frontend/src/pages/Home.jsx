@@ -245,13 +245,7 @@ const Home = () => (
         </div>
       </div>
 
-      <div className="footer-copyright-subbar">
-        <p>&copy; {new Date().getFullYear()} GasHub. All rights reserved.</p>
-        <div className="subbar-legal-links">
-          <a href="#privacy">Privacy Policy</a>
-          <a href="#terms">Terms of Use</a>
-        </div>
-      </div>
+      
     </footer>
 
   </div>
