@@ -76,10 +76,6 @@ Machine Learning Algorithm:
 ### Frontend
 - React
 - Vite
-- JavaScript
-- HTML5
-- CSS3
-- React Router
 
 ### Backend
 - Laravel 13
@@ -93,10 +89,6 @@ Machine Learning Algorithm:
 ### AI Service
 - Python
 - Flask
-- Scikit-Learn
-- Pandas
-- NumPy
-
 ---
 
 ## System Architecture
