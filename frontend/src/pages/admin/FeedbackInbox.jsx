@@ -86,7 +86,7 @@ const FeedbackInbox = () => {
               {items.length} submission{items.length !== 1 ? "s" : ""}
             </span>
             <button className="ap-hero-btn" onClick={() => { fetchItems(); fetchNotifications(); }}>
-              <FaSync style={{ fontSize: 11 }} /> Refresh
+              <FaSync style={{ fontSize: 11 }} />
             </button>
           </div>
         </div>

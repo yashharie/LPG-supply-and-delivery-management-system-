@@ -175,7 +175,7 @@ const AdminStockPage = () => {
               {totalStock.toLocaleString()} cylinders in stock
             </span>
             <button className="ap-hero-btn" onClick={fetchData}>
-              <FaSync style={{ fontSize: 11 }} /> Refresh
+              <FaSync style={{ fontSize: 11 }} />
             </button>
           </div>
         </div>

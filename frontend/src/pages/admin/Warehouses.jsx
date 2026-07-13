@@ -125,7 +125,7 @@ const Warehouses = () => {
               {warehouses.length} warehouses
             </span>
             <button className="ap-hero-btn" onClick={fetchWarehouses}>
-              <FaSync style={{ fontSize: 11 }} /> Refresh
+              <FaSync style={{ fontSize: 11 }} />
             </button>
           </div>
         </div>

@@ -130,7 +130,7 @@ const StockHistory = () => {
               {history.length} records
             </span>
             <button className="ap-hero-btn" onClick={fetchHistory}>
-              <FaSync style={{ fontSize: 11 }} /> Refresh
+              <FaSync style={{ fontSize: 11 }} />
             </button>
           </div>
         </div>

@@ -167,7 +167,7 @@ const EmployeeList = () => {
               {employees.length} staff members
             </span>
             <button className="ap-hero-btn" onClick={fetchEmployees}>
-              <FaSync style={{ fontSize: 11 }} /> Refresh
+              <FaSync style={{ fontSize: 11 }} />
             </button>
             <button
               className="ap-hero-btn"

@@ -23,13 +23,23 @@ class RefundStatusChanged extends Notification
     public function toDatabase($notifiable): array
     {
         $icon    = $this->refundStatus === 'Refunded' ? '💰' : '⏳';
-        $title   = $this->refundStatus === 'Refunded'
-            ? "{$icon} Refund Completed"
-            : "{$icon} Refund Initiated";
+        $role    = $notifiable->role ?? 'client';
 
-        $message = $this->refundStatus === 'Refunded'
-            ? "Your refund for order #{$this->order['order_number']} (LKR " . number_format($this->order['total_amount'], 2) . ") has been processed."
-            : "Your order #{$this->order['order_number']} was cancelled. A refund of LKR " . number_format($this->order['total_amount'], 2) . " is being processed.";
+        if ($role === 'admin') {
+            $title   = $this->refundStatus === 'Refunded'
+                ? "{$icon} Refund Completed"
+                : "{$icon} Refund Required";
+            $message = $this->refundStatus === 'Refunded'
+                ? "Refund completed for Order #{$this->order['order_number']} (LKR " . number_format($this->order['total_amount'], 2) . ")."
+                : "Order #{$this->order['order_number']} was cancelled with a receipt uploaded. A refund of LKR " . number_format($this->order['total_amount'], 2) . " is required.";
+        } else {
+            $title   = $this->refundStatus === 'Refunded'
+                ? "{$icon} Refund Completed"
+                : "{$icon} Refund Initiated";
+            $message = $this->refundStatus === 'Refunded'
+                ? "Your refund for order #{$this->order['order_number']} (LKR " . number_format($this->order['total_amount'], 2) . ") has been processed."
+                : "Your order #{$this->order['order_number']} was cancelled. A refund of LKR " . number_format($this->order['total_amount'], 2) . " is being processed.";
+        }
 
         if ($this->refundNotes) {
             $message .= " Note: {$this->refundNotes}";

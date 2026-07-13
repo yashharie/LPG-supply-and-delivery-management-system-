@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\Auth;
 class RefundController extends Controller
 {
     /*─────────────────────────────────────────────
-     | ADMIN: List all orders with Refund Pending
+     | ADMIN: List all orders with Refund Pending or Refunded
      ─────────────────────────────────────────────*/
     public function index()
     {
         $orders = Order::with(['user', 'warehouse', 'refundedBy'])
-            ->where('payment_status', 'Refund Pending')
-            ->orWhere('payment_status', 'Refunded')
-            ->latest()
+            ->where('status', 'Cancelled')
+            ->whereIn('payment_status', ['Refund Pending', 'Refunded'])
+            ->latest('cancelled_at')
             ->get()
             ->map(fn ($o) => $this->formatOrder($o));
 
@@ -39,6 +39,14 @@ class RefundController extends Controller
             return response()->json([
                 'status'  => false,
                 'message' => 'This order is not in Refund Pending status.',
+            ], 422);
+        }
+
+        // Block refund if no receipt was uploaded — payment was never made
+        if (empty($order->receipt_path)) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Cannot process refund: no payment receipt was uploaded. Payment was not made by the client.',
             ], 422);
         }
 
@@ -69,22 +77,27 @@ class RefundController extends Controller
     private function formatOrder(Order $o): array
     {
         return [
-            'id'                  => $o->id,
-            'order_number'        => $o->order_number,
-            'status'              => $o->status,
-            'payment_status'      => $o->payment_status,
-            'total_amount'        => $o->total_amount,
-            'created_at'          => $o->created_at,
-            'cancelled_at'        => $o->cancelled_at,
-            'cancellation_reason' => $o->cancellation_reason,
-            'refunded_at'         => $o->refunded_at,
-            'refund_notes'        => $o->refund_notes,
-            'refunded_by_name'    => $o->refundedBy?->name,
-            'client_name'         => $o->user?->name,
-            'client_email'        => $o->user?->email,
-            'client_phone'        => $o->user?->phone,
-            'warehouse_name'      => $o->warehouse?->name,
-            'receipt_path'        => $o->receipt_path,
+            'id'                   => $o->id,
+            'order_number'         => $o->order_number,
+            'status'               => $o->status,
+            'payment_status'       => $o->payment_status,
+            'total_amount'         => $o->total_amount,
+            'created_at'           => $o->created_at,
+            'cancelled_at'         => $o->cancelled_at,
+            'cancellation_reason'  => $o->cancellation_reason,
+            'refunded_at'          => $o->refunded_at,
+            'refund_notes'         => $o->refund_notes,
+            'refunded_by_name'     => $o->refundedBy?->name,
+            'client_name'          => $o->user?->name,
+            'client_email'         => $o->user?->email,
+            'client_phone'         => $o->user?->phone,
+            'warehouse_name'       => $o->warehouse?->name,
+            'receipt_path'         => $o->receipt_path,
+            // Bank details for refund
+            'refund_bank_name'     => $o->refund_bank_name,
+            'refund_bank_branch'   => $o->refund_bank_branch,
+            'refund_account_number'=> $o->refund_account_number,
+            'has_receipt'          => !empty($o->receipt_path),
         ];
     }
 }

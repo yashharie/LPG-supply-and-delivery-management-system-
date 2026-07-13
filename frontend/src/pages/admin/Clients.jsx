@@ -87,7 +87,7 @@ const Clients = () => {
               {clients.length} clients
             </span>
             <button className="ap-hero-btn" onClick={fetchClients}>
-              <FaSync style={{ fontSize: 11 }} /> Refresh
+              <FaSync style={{ fontSize: 11 }} />
             </button>
           </div>
         </div>

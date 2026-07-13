@@ -105,28 +105,69 @@ const OrderHistory = ({ token, refreshKey }) => {
   useEffect(() => { fetchOrders(); }, [fetchOrders, refreshKey]);
 
   const cancelOrder = async (id) => {
-    const { value: reason, isConfirmed } = await Swal.fire({
+    // Check if order has a receipt (payment was submitted)
+    const order = orders.find(o => o.id === id);
+    const hasReceipt = !!order?.receipt_path;
+
+    const { value: formValues, isConfirmed } = await Swal.fire({
       title: "Cancel this order?",
       html: `
-        <p style="color:#64748b;font-size:14px;margin-bottom:14px">
-          Please tell us why you are cancelling.
+        <p style="color:#64748b;font-size:14px;margin-bottom:14px;text-align:left">
+          Please provide a reason for cancellation.
+          ${hasReceipt ? '<br/><span style="color:#d97706;font-weight:600">⚠️ You uploaded a payment receipt — bank details are required for your refund.</span>' : ''}
         </p>
-        <textarea id="cancel-reason" class="swal2-textarea"
-          placeholder="e.g. Changed my mind / Ordered wrong quantity…"
-          style="width:90%;font-size:13px;border:1.5px solid #e2e8f0;border-radius:6px;padding:10px;resize:vertical;min-height:80px;"
-        ></textarea>
+        <div style="text-align:left">
+          <label style="font-size:12px;font-weight:700;color:#475569;display:block;margin-bottom:4px">Reason *</label>
+          <textarea id="cancel-reason"
+            placeholder="e.g. Changed my mind / Ordered wrong quantity…"
+            style="width:100%;font-size:13px;border:1.5px solid #e2e8f0;border-radius:6px;padding:10px;resize:vertical;min-height:70px;box-sizing:border-box;font-family:inherit;margin-bottom:12px;"
+          ></textarea>
+
+          ${hasReceipt ? `
+          <label style="font-size:12px;font-weight:700;color:#475569;display:block;margin-bottom:4px">Bank Name *</label>
+          <input id="bank-name" type="text" placeholder="e.g. Commercial Bank"
+            style="width:100%;font-size:13px;border:1.5px solid #e2e8f0;border-radius:6px;padding:9px 10px;box-sizing:border-box;font-family:inherit;margin-bottom:10px;" />
+
+          <label style="font-size:12px;font-weight:700;color:#475569;display:block;margin-bottom:4px">Branch Name *</label>
+          <input id="bank-branch" type="text" placeholder="e.g. Trincomalee Main Branch"
+            style="width:100%;font-size:13px;border:1.5px solid #e2e8f0;border-radius:6px;padding:9px 10px;box-sizing:border-box;font-family:inherit;margin-bottom:10px;" />
+
+          <label style="font-size:12px;font-weight:700;color:#475569;display:block;margin-bottom:4px">Account Number *</label>
+          <input id="account-number" type="text" placeholder="e.g. 1234567890"
+            style="width:100%;font-size:13px;border:1.5px solid #e2e8f0;border-radius:6px;padding:9px 10px;box-sizing:border-box;font-family:inherit;" />
+          ` : ''}
+        </div>
       `,
       showCancelButton: true,
       confirmButtonText: "Yes, Cancel Order",
       cancelButtonText: "Go Back",
       confirmButtonColor: "#dc2626",
+      width: hasReceipt ? 520 : 420,
       preConfirm: () => {
-        const val = document.getElementById("cancel-reason")?.value?.trim();
-        if (!val) {
+        const reason = document.getElementById("cancel-reason")?.value?.trim();
+        if (!reason) {
           Swal.showValidationMessage("Please provide a reason for cancellation.");
           return false;
         }
-        return val;
+        if (hasReceipt) {
+          const bankName   = document.getElementById("bank-name")?.value?.trim();
+          const bankBranch = document.getElementById("bank-branch")?.value?.trim();
+          const accountNum = document.getElementById("account-number")?.value?.trim();
+          if (!bankName) {
+            Swal.showValidationMessage("Bank name is required for refund.");
+            return false;
+          }
+          if (!bankBranch) {
+            Swal.showValidationMessage("Branch name is required for refund.");
+            return false;
+          }
+          if (!accountNum || !/^\d{6,20}$/.test(accountNum)) {
+            Swal.showValidationMessage("Account number must be 6–20 digits.");
+            return false;
+          }
+          return { reason, bankName, bankBranch, accountNum };
+        }
+        return { reason };
       },
     });
 
@@ -134,13 +175,19 @@ const OrderHistory = ({ token, refreshKey }) => {
 
     setCancellingId(id);
     try {
+      const payload = { cancellation_reason: formValues.reason };
+      if (formValues.bankName) {
+        payload.refund_bank_name      = formValues.bankName;
+        payload.refund_bank_branch    = formValues.bankBranch;
+        payload.refund_account_number = formValues.accountNum;
+      }
       const res = await axios.post(
         `${API}/orders/${id}/cancel`,
-        { cancellation_reason: reason },
+        payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.data.refund_required) {
-        toast("Order cancelled. A refund will be processed by the admin team.", "warning");
+        toast("Order cancelled. A refund will be processed to your bank account.", "warning");
       } else {
         toast("Order cancelled successfully.", "warning");
       }

@@ -92,7 +92,14 @@
 .adm-signout-btn:hover { background: rgba(239,68,68,0.16); color: #fff; border-color: rgba(239,68,68,0.3); }
 
 /* Main */
-.adm-main { flex: 1; background: #f1f5f9; min-height: 100vh; overflow: auto; }
+.adm-main {
+  flex: 1;
+  background: #f1f5f9;
+  min-height: 100vh;
+  overflow: auto;
+  /* Ensure notification bell dropdown appears above page content */
+  position: relative;
+}
 
 /* Mobile header and navigation drawer styles */
 .adm-mobile-header { display: none; }

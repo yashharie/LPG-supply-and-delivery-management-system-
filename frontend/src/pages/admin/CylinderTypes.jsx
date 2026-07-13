@@ -95,7 +95,7 @@ const CylinderTypes = () => {
               {cylinderTypes.length} types · {brands.length} brands
             </span>
             <button className="ap-hero-btn" onClick={fetchAll}>
-              <FaSync style={{ fontSize: 11 }} /> Refresh
+              <FaSync style={{ fontSize: 11 }} />
             </button>
           </div>
         </div>

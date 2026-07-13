@@ -196,7 +196,7 @@ const ManagerDashboard = () => {
           padding:"8px 16px", borderRadius:8, border:"1.5px solid #e2e8f0",
           background:"#fff", color:"#475569", fontSize:13, fontWeight:600, cursor:"pointer",
         }}>
-          <FaSync style={{ fontSize:11 }} /> Refresh
+          <FaSync style={{ fontSize:11 }} />
         </button>
       </div>
 

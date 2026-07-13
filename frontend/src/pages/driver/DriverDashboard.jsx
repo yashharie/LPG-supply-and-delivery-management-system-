@@ -774,7 +774,7 @@ const DriverDashboard = () => {
             )}
           </div>
           <button onClick={fetchData} className="drv-btn-refresh">
-            <FaSync style={{ fontSize:11 }} /> Refresh
+            <FaSync style={{ fontSize:11 }} />
           </button>
           {gpsStatus !== "sharing" ? (
             <button onClick={startSharing} className="drv-btn-gps-start">

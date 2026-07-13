@@ -123,7 +123,7 @@ const Orders = () => {
               {orders.length} total orders
             </span>
             <button className="ap-hero-btn" onClick={fetchOrders}>
-              <FaSync style={{ fontSize: 11 }} /> Refresh
+              <FaSync style={{ fontSize: 11 }} />
             </button>
           </div>
         </div>

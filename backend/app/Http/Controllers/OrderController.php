@@ -395,8 +395,9 @@ class OrderController extends Controller
 
         $distanceKm  = $this->haversine($userLat, $userLng, (float)$warehouse->latitude, (float)$warehouse->longitude);
         $deliveryFee = max(100, round($distanceKm) * 100 + 100);
-        $partialCost = $availableQty > 0 ? round(($availableQty / $totalQty) * $cylinderCost, 2) : $cylinderCost;
-        $totalAmount = $partialCost + $deliveryFee;
+        // total_cost from frontend is already the full cylinder cost for all requested items
+        // For partial orders, charge full cylinder cost (client pays for what they ordered)
+        $totalAmount = $cylinderCost + $deliveryFee;
 
         // The order quantity stored — total_quantity ALWAYS = full requested amount
         // remaining_quantity = what's available NOW for first batch
@@ -540,21 +541,34 @@ class OrderController extends Controller
 
         $reason = $request->input('cancellation_reason', 'Cancelled by client.');
 
-        // If payment was verified (Approved or beyond Pending) → trigger refund flow
+        // Trigger refund if:
+        // 1. Payment was formally verified (status=Approved or payment_status=Verified), OR
+        // 2. Client has already uploaded a payment receipt (payment submitted, awaiting review)
         $paymentVerified = $order->payment_status === 'Verified'
-            || $order->status === 'Approved';
+            || $order->status === 'Approved'
+            || !empty($order->receipt_path);
 
         if ($paymentVerified) {
+            // Bank details required for refund
+            $request->validate([
+                'refund_bank_name'       => 'required|string|max:100',
+                'refund_bank_branch'     => 'required|string|max:100',
+                'refund_account_number'  => 'required|string|max:30',
+            ]);
+
             // Return stock if order was Approved
             if ($order->status === 'Approved') {
                 $this->returnStockOnReject($order, Auth::id());
             }
 
             $order->update([
-                'status'              => 'Cancelled',
-                'payment_status'      => 'Refund Pending',
-                'cancellation_reason' => $reason,
-                'cancelled_at'        => now(),
+                'status'                 => 'Cancelled',
+                'payment_status'         => 'Refund Pending',
+                'cancellation_reason'    => $reason,
+                'cancelled_at'           => now(),
+                'refund_bank_name'       => $request->refund_bank_name,
+                'refund_bank_branch'     => $request->refund_bank_branch,
+                'refund_account_number'  => $request->refund_account_number,
             ]);
 
             // Notify client — refund pending
@@ -566,6 +580,19 @@ class OrderController extends Controller
                 ],
                 refundStatus: 'Refund Pending',
             ));
+
+            // Notify all admins — so they see it in their bell
+            \App\Models\User::where('role', 'admin')->where('status', true)->get()
+                ->each(fn ($admin) => $admin->notify(
+                    new \App\Notifications\RefundStatusChanged(
+                        order: [
+                            'id'           => $order->id,
+                            'order_number' => $order->order_number,
+                            'total_amount' => $order->total_amount,
+                        ],
+                        refundStatus: 'Refund Pending',
+                    )
+                ));
 
         } else {
             // No payment verified — simple cancel, no refund needed

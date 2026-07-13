@@ -163,15 +163,15 @@ const ClientDashboard = () => {
         <div className="cl-desktop-right" style={{ display:"flex", alignItems:"center", gap:10 }}>
           <NotificationBell token={token} />
           <button onClick={refresh} title="Refresh" style={{
-            display:"flex", alignItems:"center", gap:6,
-            padding:"7px 14px", borderRadius:8,
+            display:"flex", alignItems:"center", justifyContent:"center",
+            padding:"7px 10px", borderRadius:8,
             border:"1.5px solid #e2e8f0", background:"#fff",
             color:"#475569", fontSize:13, fontWeight:600, cursor:"pointer",
             transition:"all .15s",
           }}
           onMouseEnter={e => { e.currentTarget.style.borderColor="#3b82f6"; e.currentTarget.style.color="#1e40af"; }}
           onMouseLeave={e => { e.currentTarget.style.borderColor="#e2e8f0"; e.currentTarget.style.color="#475569"; }}>
-            <FaSync style={{ fontSize:11 }} /> Refresh
+            <FaSync style={{ fontSize:13 }} />
           </button>
           <div style={{
             display:"flex", alignItems:"center", gap:8,
@@ -193,9 +193,8 @@ const ClientDashboard = () => {
           <button onClick={handleLogout} className="cl-logout">Logout</button>
         </div>
 
-        {/* Mobile controls (hamburger + bell) */}
+        {/* Mobile controls (hamburger only) */}
         <div className="cl-mobile-only" style={{ display:"flex", alignItems:"center", gap:12 }}>
-          <NotificationBell token={token} />
           <button className="cl-hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation">
             {menuOpen ? "✕" : "☰"}
           </button>
@@ -229,13 +228,13 @@ const ClientDashboard = () => {
               <span style={{ fontSize: 11, color: "#64748b" }}>Consumer Client</span>
             </div>
           </div>
-          <button onClick={() => { refresh(); setMenuOpen(false); }} style={{
-            display:"flex", alignItems:"center", justifyContent: "center", gap:6,
-            padding:"9px", borderRadius:8,
+          <button onClick={() => { refresh(); setMenuOpen(false); }} title="Refresh" style={{
+            display:"flex", alignItems:"center", justifyContent: "center",
+            padding:"9px 11px", borderRadius:8,
             border:"1.5px solid #e2e8f0", background:"#fff",
-            color:"#475569", fontSize:13, fontWeight:600, cursor:"pointer",
+            color:"#475569", cursor:"pointer",
           }}>
-            <FaSync style={{ fontSize:11 }} /> Refresh Data
+            <FaSync style={{ fontSize:13 }} />
           </button>
           <button onClick={handleLogout} className="cl-logout">Logout Account</button>
         </div>

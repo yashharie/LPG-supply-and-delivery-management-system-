@@ -141,7 +141,7 @@ const AdminDashboard = () => {
           }}
           onMouseEnter={e => e.currentTarget.style.background="rgba(255,255,255,.18)"}
           onMouseLeave={e => e.currentTarget.style.background="rgba(255,255,255,.1)"}>
-            <FaSync style={{ fontSize:11 }} /> Refresh
+            <FaSync style={{ fontSize:11 }} />
           </button>
         </div>
       </div>

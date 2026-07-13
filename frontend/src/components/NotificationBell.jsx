@@ -1,19 +1,23 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
-import { FaBell, FaBoxes, FaExclamationTriangle, FaBellSlash } from "react-icons/fa";
+import { FaBell, FaBoxes, FaExclamationTriangle, FaBellSlash, FaMoneyBillWave } from "react-icons/fa";
 
 const API = "http://127.0.0.1:8000/api";
 
 const TYPE_ICON = {
-  order_placed: <FaBoxes />,
-  order_status: <FaBell />,
-  low_stock:    <FaExclamationTriangle />,
+  order_placed:  <FaBoxes />,
+  order_status:  <FaBell />,
+  low_stock:     <FaExclamationTriangle />,
+  refund_status: <FaMoneyBillWave />,
+  complaint:     <FaExclamationTriangle />,
 };
 
 const TYPE_COLOR = {
-  order_placed: { bg: "#eff6ff", border: "#bfdbfe", dot: "#3b82f6", iconColor: "#3b82f6" },
-  order_status: { bg: "#f0fdf4", border: "#bbf7d0", dot: "#16a34a", iconColor: "#16a34a" },
-  low_stock:    { bg: "#fff7ed", border: "#fed7aa", dot: "#ea580c", iconColor: "#ea580c" },
+  order_placed:  { bg: "#eff6ff", border: "#bfdbfe", dot: "#3b82f6",  iconColor: "#3b82f6"  },
+  order_status:  { bg: "#f0fdf4", border: "#bbf7d0", dot: "#16a34a",  iconColor: "#16a34a"  },
+  low_stock:     { bg: "#fff7ed", border: "#fed7aa", dot: "#ea580c",  iconColor: "#ea580c"  },
+  refund_status: { bg: "#fefce8", border: "#fde68a", dot: "#d97706",  iconColor: "#d97706"  },
+  complaint:     { bg: "#fef2f2", border: "#fecaca", dot: "#dc2626",  iconColor: "#dc2626"  },
 };
 
 const NotificationBell = ({ token }) => {
@@ -21,6 +25,7 @@ const NotificationBell = ({ token }) => {
   const [unread,        setUnread]        = useState(0);
   const [open,          setOpen]          = useState(false);
   const [dropPos,       setDropPos]       = useState({ top: 0, left: 0 });
+  const [typeFilter,    setTypeFilter]    = useState("all"); // all | pending | completed
   const dropRef = useRef(null);
   const bellRef = useRef(null);
 
@@ -105,6 +110,13 @@ const NotificationBell = ({ token }) => {
     if (!open) fetchNotifications();
   };
 
+  // Filter notifications based on selected tab
+  const filteredNotifications = notifications.filter((n) => {
+    if (typeFilter === "pending")   return n.type === "refund_status" && n.data?.refund_status === "Refund Pending";
+    if (typeFilter === "completed") return n.type === "refund_status" && n.data?.refund_status === "Refunded";
+    return true; // "all"
+  });
+
   return (
     <div ref={dropRef} style={{ position: "relative", display: "inline-block" }}>
 
@@ -179,15 +191,41 @@ const NotificationBell = ({ token }) => {
             )}
           </div>
 
+          {/* Filter tabs */}
+          <div style={{
+            display: "flex", gap: 4, padding: "8px 12px",
+            borderBottom: "1px solid #f0f0f0", background: "#fafafa",
+          }}>
+            {[
+              { key: "all",       label: "All" },
+              { key: "pending",   label: "⏳ Pending" },
+              { key: "completed", label: "✅ Completed" },
+            ].map((f) => (
+              <button
+                key={f.key}
+                onClick={() => setTypeFilter(f.key)}
+                style={{
+                  padding: "4px 10px", borderRadius: 6, border: "none", cursor: "pointer",
+                  fontSize: 11, fontWeight: 700, fontFamily: "inherit",
+                  background: typeFilter === f.key ? "#1e40af" : "#f1f5f9",
+                  color:      typeFilter === f.key ? "#fff"    : "#64748b",
+                  transition: "all 0.15s",
+                }}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+
           {/* List */}
           <div style={{ overflowY: "auto", flex: 1 }}>
-            {notifications.length === 0 ? (
+            {filteredNotifications.length === 0 ? (
               <div style={{ padding: "32px 16px", textAlign: "center", color: "#94a3b8" }}>
                 <div style={{ fontSize: 24, marginBottom: 8, display: "flex", justifyContent: "center" }}><FaBellSlash /></div>
                 <p style={{ margin: 0, fontSize: 14 }}>No notifications yet</p>
               </div>
             ) : (
-              notifications.map((n) => {
+              filteredNotifications.map((n) => {
                 const tc = TYPE_COLOR[n.type] ?? { bg: "#f8fafc", border: "#e2e8f0", dot: "#94a3b8", iconColor: "#94a3b8" };
                 return (
                   <div
@@ -260,7 +298,7 @@ const NotificationBell = ({ token }) => {
               padding: "10px 16px", borderTop: "1px solid #f0f0f0",
               textAlign: "center", fontSize: 12, color: "#94a3b8",
             }}>
-              Showing last {notifications.length} notifications • auto-refreshes every 30s
+              Showing {filteredNotifications.length} of {notifications.length} notifications • auto-refreshes every 30s
             </div>
           )}
         </div>

@@ -5,7 +5,6 @@ import { FaMoneyBillWave, FaSync, FaCheckCircle } from "react-icons/fa";
 import "../../styles/AdminPages.css";
 
 const API     = "http://127.0.0.1:8000/api";
-const STORAGE = "http://127.0.0.1:8000/storage/";
 
 const fmt = (n) =>
   n != null ? `LKR ${parseFloat(n).toLocaleString("en-LK", { minimumFractionDigits: 2 })}` : "—";
@@ -85,7 +84,7 @@ const Refunds = () => {
               {pendingCount} pending · {refundedCount} completed
             </span>
             <button className="ap-hero-btn" onClick={fetchRefunds}>
-              <FaSync style={{ fontSize: 11 }} /> Refresh
+              <FaSync style={{ fontSize: 11 }} />
             </button>
           </div>
         </div>
@@ -183,6 +182,52 @@ const Refunds = () => {
                     </div>
                   </div>
 
+                  {/* Bank details */}
+                  {(r.refund_bank_name || r.refund_bank_branch || r.refund_account_number) ? (
+                    <div className="ap-info-cell" style={{ background: "#eff6ff", borderColor: "#bfdbfe" }}>
+                      <div className="ap-info-cell-label">🏦 Refund Bank Details</div>
+                      <div className="ap-info-cell-value" style={{ fontSize: 13 }}>
+                        {r.refund_bank_name}
+                      </div>
+                      <div className="ap-info-cell-sub">Branch: {r.refund_bank_branch}</div>
+                      <div className="ap-info-cell-sub" style={{ fontFamily: "monospace", fontWeight: 700, color: "#1e40af" }}>
+                        Acc: {r.refund_account_number}
+                      </div>
+                    </div>
+                  ) : isPending && (
+                    <div className="ap-info-cell" style={{ background: "#fef2f2", borderColor: "#fecaca" }}>
+                      <div className="ap-info-cell-label">🏦 Bank Details</div>
+                      <div className="ap-info-cell-value" style={{ fontSize: 12, color: "#dc2626" }}>
+                        Not provided
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Payment receipt status */}
+                  <div className="ap-info-cell" style={{
+                    background: r.has_receipt ? "#f0fdf4" : "#fef2f2",
+                    borderColor: r.has_receipt ? "#bbf7d0" : "#fecaca",
+                  }}>
+                    <div className="ap-info-cell-label">Payment Receipt</div>
+                    {r.has_receipt ? (
+                      <>
+                        <div className="ap-info-cell-value" style={{ color: "#065f46" }}>✅ Receipt uploaded</div>
+                        <a
+                          href={`http://127.0.0.1:8000/storage/${r.receipt_path}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          style={{ color: "#1e62d4", fontWeight: 600, fontSize: 12, marginTop: 4, display: "block" }}
+                        >
+                          View Receipt ↗
+                        </a>
+                      </>
+                    ) : (
+                      <div className="ap-info-cell-value" style={{ color: "#dc2626", fontSize: 12 }}>
+                        ❌ No receipt — Payment not made
+                      </div>
+                    )}
+                  </div>
+
                   {r.payment_status === "Refunded" && (
                     <div className="ap-info-cell" style={{ background: "#f0fdf4", borderColor: "#bbf7d0" }}>
                       <div className="ap-info-cell-label">Refund Completed</div>
@@ -193,49 +238,46 @@ const Refunds = () => {
                       {r.refund_notes && <div className="ap-info-cell-sub">Note: {r.refund_notes}</div>}
                     </div>
                   )}
-
-                  {r.receipt_path && (
-                    <div className="ap-info-cell">
-                      <div className="ap-info-cell-label">Payment Receipt</div>
-                      <a
-                        href={STORAGE + r.receipt_path}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{ color: "#1e62d4", fontWeight: 600, fontSize: 13 }}
-                      >
-                        View Receipt ↗
-                      </a>
-                    </div>
-                  )}
                 </div>
 
                 {/* Actions for pending refunds */}
                 {isPending && (
-                  <div style={{ marginTop: 14, display: "flex", gap: 12, alignItems: "flex-end", flexWrap: "wrap" }}>
-                    <div style={{ flex: 1, minWidth: 200 }}>
-                      <label style={{
-                        display: "block", fontSize: 11, fontWeight: 700,
-                        color: "#64748b", textTransform: "uppercase",
-                        letterSpacing: 0.4, marginBottom: 5,
-                      }}>
-                        Refund Notes (optional)
-                      </label>
-                      <input
-                        className="ap-input"
-                        placeholder="e.g. Bank transfer completed — ref #123"
-                        value={noteMap[r.id] ?? ""}
-                        onChange={(e) => setNoteMap((prev) => ({ ...prev, [r.id]: e.target.value }))}
-                        style={{ maxWidth: 420 }}
-                      />
+                  r.has_receipt ? (
+                    <div style={{ marginTop: 14, display: "flex", gap: 12, alignItems: "flex-end", flexWrap: "wrap" }}>
+                      <div style={{ flex: 1, minWidth: 200 }}>
+                        <label style={{
+                          display: "block", fontSize: 11, fontWeight: 700,
+                          color: "#64748b", textTransform: "uppercase",
+                          letterSpacing: 0.4, marginBottom: 5,
+                        }}>
+                          Refund Notes (optional)
+                        </label>
+                        <input
+                          className="ap-input"
+                          placeholder="e.g. Bank transfer completed — ref #123"
+                          value={noteMap[r.id] ?? ""}
+                          onChange={(e) => setNoteMap((prev) => ({ ...prev, [r.id]: e.target.value }))}
+                          style={{ maxWidth: 420 }}
+                        />
+                      </div>
+                      <button
+                        onClick={() => handleMarkRefunded(r)}
+                        className="ap-btn ap-btn-success"
+                        style={{ padding: "10px 22px" }}
+                      >
+                        <FaCheckCircle style={{ fontSize: 13 }} /> Mark as Refunded
+                      </button>
                     </div>
-                    <button
-                      onClick={() => handleMarkRefunded(r)}
-                      className="ap-btn ap-btn-success"
-                      style={{ padding: "10px 22px" }}
-                    >
-                      <FaCheckCircle style={{ fontSize: 13 }} /> Mark as Refunded
-                    </button>
-                  </div>
+                  ) : (
+                    <div style={{
+                      marginTop: 14, padding: "12px 16px",
+                      background: "#fef2f2", border: "1px solid #fecaca",
+                      borderRadius: 8, fontSize: 13, fontWeight: 600, color: "#dc2626",
+                      display: "flex", alignItems: "center", gap: 8,
+                    }}>
+                      ❌ Refund cannot be processed — client did not upload a payment receipt. No payment was made.
+                    </div>
+                  )
                 )}
               </div>
             );

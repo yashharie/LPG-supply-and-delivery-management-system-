@@ -157,7 +157,7 @@ const LiveDriversMap = () => {
           }}
         >
           <FaSync style={{ fontSize: 11 }} />
-          Refresh {lastUpdate && `· ${ago(lastUpdate)}`}
+          {lastUpdate && `· ${ago(lastUpdate)}`}
         </button>
       </div>
 
