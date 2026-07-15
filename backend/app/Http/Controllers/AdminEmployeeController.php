@@ -20,10 +20,12 @@ class AdminEmployeeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'         => 'required|string|max:255',
+            'name'         => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s]+$/'],
             'nic'          => 'required|string|unique:users,nic',
             'role'         => 'required|in:employee,manager,driver',
             'warehouse_id' => 'nullable|exists:warehouses,id',
+        ], [
+            'name.regex' => 'Name must contain letters only (no numbers or symbols).',
         ]);
 
         $prefix = match ($request->role) {

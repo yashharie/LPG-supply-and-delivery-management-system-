@@ -72,6 +72,11 @@ const EmployeeList = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Frontend name validation — letters only
+    if (!/^[a-zA-Z\s]+$/.test(form.name.trim())) {
+      errorAlert("Invalid Name", "Name must contain letters only (no numbers or symbols).");
+      return;
+    }
     setSubmitting(true);
     setCredentials(null);
     try {
@@ -242,7 +247,8 @@ const EmployeeList = () => {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }} onClick={(e) => e.stopPropagation()}>
                 <div className="ap-form-group" style={{ margin: 0 }}>
                   <label className="ap-label">Full Name *</label>
-                  <input name="name" value={form.name} onChange={handleChange} placeholder="e.g. John Perera" required className="ap-input" />
+                  <input name="name" value={form.name} onChange={handleChange} placeholder="e.g. John Perera" required className="ap-input"
+                    pattern="[A-Za-z\s]+" title="Letters only — no numbers or symbols" />
                 </div>
                 <div className="ap-form-group" style={{ margin: 0 }}>
                   <label className="ap-label">NIC Number *</label>

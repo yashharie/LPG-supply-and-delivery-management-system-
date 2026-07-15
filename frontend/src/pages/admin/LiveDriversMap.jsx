@@ -24,8 +24,12 @@ const makeDriverIcon = (active) => L.divIcon({
       border:3px solid #fff;
       box-shadow:0 3px 12px rgba(0,0,0,0.25);
       display:flex;align-items:center;justify-content:center;
-      font-size:18px;position:relative;
-    ">🚚</div>
+      position:relative;
+    ">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#fff">
+        <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+      </svg>
+    </div>
     ${active ? `<div style="
       position:absolute;top:-1px;right:-1px;
       width:12px;height:12px;border-radius:50%;
@@ -108,7 +112,6 @@ const LiveDriversMap = () => {
           {[
             { label: "All Drivers",   val: drivers.length,        bg: "rgba(59,130,246,0.2)",  border: "rgba(59,130,246,0.4)",  color: "#93c5fd" },
             { label: "🟢 On Trip",    val: activeDrivers.length,  bg: "rgba(34,197,94,0.15)",  border: "rgba(34,197,94,0.4)",   color: "#86efac" },
-            { label: "⚪ Idle",        val: idleDrivers.length,    bg: "rgba(148,163,184,0.15)",border: "rgba(148,163,184,0.3)", color: "#cbd5e1" },
             { label: "🔴 Offline",    val: offlineDrivers.length, bg: "rgba(239,68,68,0.15)",  border: "rgba(239,68,68,0.35)",  color: "#fca5a5" },
           ].map((s) => (
             <div key={s.label} style={{

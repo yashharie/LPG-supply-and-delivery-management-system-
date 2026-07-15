@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+﻿import { useEffect, useState, useRef, useCallback } from "react";
 import axios from "axios";
 import { MapContainer, TileLayer, Marker, Popup, useMap, Polyline } from "react-leaflet";
 import {
@@ -48,14 +48,14 @@ function RouteLayer({ from, to }) {
 
 const warehouseIcon = L.divIcon({
   className: "",
-  html: `<div style="background:#1e40af;color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);">ðŸ­</div>`,
-  iconSize: [30, 30], iconAnchor: [15, 15],
+  html: `<div style="background:#1e40af;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);"><svg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 24 24' fill='white'><path d='M22 9V7h-2V5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2v-2h-2V9h2zm-4 10H4V5h14v14z'/><path d='M6 13h5v4H6zm7-6h3v3h-3zm-7 0h5v5H6zm7 4h3v6h-3z'/></svg></div>`,
+  iconSize: [34, 34], iconAnchor: [17, 17],
 });
 
 const clientIcon = L.divIcon({
   className: "",
-  html: `<div style="background:#dc2626;color:#fff;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);">ðŸ </div>`,
-  iconSize: [30, 30], iconAnchor: [15, 15],
+  html: `<div style="background:#dc2626;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.25);"><svg xmlns='http://www.w3.org/2000/svg' width='17' height='17' viewBox='0 0 24 24' fill='white'><path d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/></svg></div>`,
+  iconSize: [34, 34], iconAnchor: [17, 17],
 });
 
 const DriverDashboard = () => {
@@ -958,10 +958,10 @@ const DriverDashboard = () => {
                         <div className="drv-route-map">
                           <MapContainer center={[warehouseLat, warehouseLng]} zoom={11} style={{ height:"100%",width:"100%" }}>
                             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                            <Marker position={[warehouseLat, warehouseLng]} icon={warehouseIcon}><Popup>🏢 Warehouse</Popup></Marker>
-                            <Marker position={[clientLat, clientLng]} icon={clientIcon}><Popup>🏠 {o.user?.name}</Popup></Marker>
+                            <Marker position={[warehouseLat, warehouseLng]} icon={warehouseIcon}><Popup>Warehouse</Popup></Marker>
+                            <Marker position={[clientLat, clientLng]} icon={clientIcon}><Popup>{o.user?.name}</Popup></Marker>
                             <RouteLayer from={[warehouseLat, warehouseLng]} to={[clientLat, clientLng]} />
-                            {currentPos && <Marker position={currentPos}><Popup>📍 You</Popup></Marker>}
+                            {currentPos && <Marker position={currentPos}><Popup>Your Location</Popup></Marker>}
                           </MapContainer>
                         </div>
                       </div>
@@ -1251,3 +1251,5 @@ const DriverDashboard = () => {
 };
 
 export default DriverDashboard;
+
+

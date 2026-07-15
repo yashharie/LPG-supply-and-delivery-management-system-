@@ -549,7 +549,30 @@ const GasBookingTab = ({ currentUser, token, setCurrentTab }) => {
                 </div>
                 <div style={{ fontSize:11, color:"#94a3b8" }}>JPG · PNG · PDF · max 4 MB</div>
               </div>
-              <input type="file" accept=".jpg,.jpeg,.png,.pdf" onChange={(e) => setReceipt(e.target.files?.[0] ?? null)} style={{ display:"none" }} />
+              <input
+                type="file"
+                accept=".jpg,.jpeg,.png,.pdf"
+                onChange={(e) => {
+                  const file = e.target.files?.[0] ?? null;
+                  if (!file) { setReceipt(null); return; }
+                  const allowed = ["image/jpeg", "image/jpg", "image/png", "application/pdf"];
+                  if (!allowed.includes(file.type)) {
+                    setSubmitMsg("Error: Only JPG, PNG or PDF files are allowed.");
+                    e.target.value = "";
+                    setReceipt(null);
+                    return;
+                  }
+                  if (file.size > 4 * 1024 * 1024) {
+                    setSubmitMsg("Error: File size must not exceed 4 MB.");
+                    e.target.value = "";
+                    setReceipt(null);
+                    return;
+                  }
+                  setSubmitMsg("");
+                  setReceipt(file);
+                }}
+                style={{ display:"none" }}
+              />
             </label>
           </div>
 

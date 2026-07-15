@@ -14,7 +14,7 @@ import "../../styles/ClientDashboard.css";
 const API = "http://127.0.0.1:8000/api";
 
 const TABS = [
-  { key: "booking", label: "Book Gas",  icon: "🔥" },
+  { key: "booking", label: "Book Gas",  icon: "" },
   { key: "history", label: "My Orders", icon: "📋" },
   { key: "profile", label: "Profile",   icon: "👤" },
 ];
